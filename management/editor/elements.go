@@ -91,7 +91,7 @@ func File(fieldName string, p interface{}, attrs map[string]string) []byte {
 			<label class="active">` + attrs["label"] + `</label>
 			<div class="file-field input-field">
 				<div class="btn">
-					<span>Upload</span>
+					<span>ÉÏ´«</span>
 					<input class="upload" type="file">
 				</div>
 				<div class="file-path-wrapper">
@@ -340,7 +340,7 @@ func Select(fieldName string, p interface{}, attrs, options map[string]string) [
 	cta := &Element{
 		TagName: "option",
 		Attrs:   map[string]string{"disabled": "true", "selected": "true"},
-		Data:    "Select an option...",
+		Data:    "ÇëÑ¡Ôñ...",
 		ViewBuf: &bytes.Buffer{},
 	}
 
@@ -348,7 +348,7 @@ func Select(fieldName string, p interface{}, attrs, options map[string]string) [
 	reset := &Element{
 		TagName: "option",
 		Attrs:   map[string]string{"value": ""},
-		Data:    "None",
+		Data:    "--",
 		ViewBuf: &bytes.Buffer{},
 	}
 

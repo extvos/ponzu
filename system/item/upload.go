@@ -34,9 +34,9 @@ func (f *FileUpload) MarshalEditor() ([]byte, error) {
                 <!-- Add your custom editor field view here. -->
 				<h5>` + f.Name + `</h5>
 				<ul>
-					<li><span class="grey-text text-lighten-1">Content-Length:</span> ` + fmt.Sprintf("%s", FmtBytes(float64(f.ContentLength))) + `</li>
-					<li><span class="grey-text text-lighten-1">Content-Type:</span> ` + f.ContentType + `</li>
-					<li><span class="grey-text text-lighten-1">Uploaded:</span> ` + FmtTime(f.Timestamp) + `</li>
+					<li><span class="grey-text text-lighten-1">大小：</span> ` + fmt.Sprintf("%s", FmtBytes(float64(f.ContentLength))) + `</li>
+					<li><span class="grey-text text-lighten-1">类型：</span> ` + f.ContentType + `</li>
+					<li><span class="grey-text text-lighten-1">上传于：</span> ` + FmtTime(f.Timestamp) + `</li>
 				</ul>
             </div>
             `)
@@ -44,8 +44,8 @@ func (f *FileUpload) MarshalEditor() ([]byte, error) {
 		},
 		editor.Field{
 			View: editor.File("Path", f, map[string]string{
-				"label":       "File Upload",
-				"placeholder": "Upload the file here",
+				"label":       "文件上传",
+				"placeholder": "上传文件到这里",
 			}),
 		},
 	)

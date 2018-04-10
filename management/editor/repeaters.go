@@ -124,7 +124,7 @@ func SelectRepeater(fieldName string, p interface{}, attrs, options map[string]s
 			cta := &Element{
 				TagName: "option",
 				Attrs:   map[string]string{"disabled": "true", "selected": "true"},
-				Data:    "Select an option...",
+				Data:    "请选择...",
 				ViewBuf: &bytes.Buffer{},
 			}
 
@@ -132,7 +132,7 @@ func SelectRepeater(fieldName string, p interface{}, attrs, options map[string]s
 			reset := &Element{
 				TagName: "option",
 				Attrs:   map[string]string{"value": ""},
-				Data:    "None",
+				Data:    "--",
 				ViewBuf: &bytes.Buffer{},
 			}
 
@@ -194,11 +194,11 @@ func FileRepeater(fieldName string, p interface{}, attrs map[string]string) []by
 			%[2]s
 			<div class="file-field input-field">
 				<div class="btn">
-					<span>Upload</span>
+					<span>上传</span>
 					<input class="upload %[4]s" type="file" />
 				</div>
 				<div class="file-path-wrapper">
-					<input class="file-path validate" placeholder="Add %[5]s" type="text" />
+					<input class="file-path validate" placeholder="添加 %[5]s" type="text" />
 				</div>
 			</div>
 			<div class="preview"><div class="img-clip"></div></div>			

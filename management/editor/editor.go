@@ -63,49 +63,49 @@ func Form(post Editable, fields ...Field) ([]byte, error) {
 
 	publishTime := `
 <div class="row content-only __ponzu">
+	<div class="input-field col s4">
+		<label class="active">年</label>
+		<input value="" class="year __ponzu" maxlength="4" type="text" placeholder="YYYY" />
+	</div>
 	<div class="input-field col s6">
-		<label class="active">MM</label>
+		<label class="active">月</label>
 		<select class="month __ponzu browser-default">
-			<option value="1">Jan - 01</option>
-			<option value="2">Feb - 02</option>
-			<option value="3">Mar - 03</option>
-			<option value="4">Apr - 04</option>
-			<option value="5">May - 05</option>
-			<option value="6">Jun - 06</option>
-			<option value="7">Jul - 07</option>
-			<option value="8">Aug - 08</option>
-			<option value="9">Sep - 09</option>
-			<option value="10">Oct - 10</option>
-			<option value="11">Nov - 11</option>
-			<option value="12">Dec - 12</option>
+			<option value="1">一月</option>
+			<option value="2">二月</option>
+			<option value="3">三月</option>
+			<option value="4">四月</option>
+			<option value="5">五月</option>
+			<option value="6">六月</option>
+			<option value="7">七月</option>
+			<option value="8">八月</option>
+			<option value="9">九月</option>
+			<option value="10">十月</option>
+			<option value="11">十一月</option>
+			<option value="12">十二月</option>
 		</select>
 	</div>
 	<div class="input-field col s2">
-		<label class="active">DD</label>
+		<label class="active">日</label>
 		<input value="" class="day __ponzu" maxlength="2" type="text" placeholder="DD" />
-	</div>
-	<div class="input-field col s4">
-		<label class="active">YYYY</label>
-		<input value="" class="year __ponzu" maxlength="4" type="text" placeholder="YYYY" />
 	</div>
 </div>
 
 <div class="row content-only __ponzu">
+	<div class="input-field col s4">
+		<label class="active">时段</label>
+		<select class="period __ponzu browser-default">
+			<option value="AM">上午</option>
+			<option value="PM">下午</option>
+		</select>
+	</div>
 	<div class="input-field col s3">
-		<label class="active">HH</label>
+		<label class="active">小时</label>
 		<input value="" class="hour __ponzu" maxlength="2" type="text" placeholder="HH" />
 	</div>
 	<div class="col s1">:</div>
 	<div class="input-field col s3">
-		<label class="active">MM</label>
+		<label class="active">分钟</label>
 		<input value="" class="minute __ponzu" maxlength="2" type="text" placeholder="MM" />
-	</div>
-	<div class="input-field col s4">
-		<label class="active">Period</label>
-		<select class="period __ponzu browser-default">
-			<option value="AM">AM</option>
-			<option value="PM">PM</option>
-		</select>
 	</div>
 </div>
 	`
@@ -123,8 +123,8 @@ func Form(post Editable, fields ...Field) ([]byte, error) {
 
 	submit := `
 <div class="input-field post-controls">
-	<button class="right waves-effect waves-light btn green save-post" type="submit">Save</button>
-	<button class="right waves-effect waves-light btn red delete-post" type="submit">Delete</button>
+	<button class="right waves-effect waves-light btn green save-post" type="submit">保存</button>
+	<button class="right waves-effect waves-light btn red delete-post" type="submit">删除</button>
 </div>
 `
 	_, ok := post.(Mergeable)
@@ -133,10 +133,10 @@ func Form(post Editable, fields ...Field) ([]byte, error) {
 			`
 <div class="row external post-controls">
 	<div class="col s12 input-field">
-		<button class="right waves-effect waves-light btn blue approve-post" type="submit">Approve</button>
-		<button class="right waves-effect waves-light btn grey darken-2 reject-post" type="submit">Reject</button>
+		<button class="right waves-effect waves-light btn blue approve-post" type="submit">批准</button>
+		<button class="right waves-effect waves-light btn grey darken-2 reject-post" type="submit">拒绝</button>
 	</div>	
-	<label class="approve-details right-align col s12">This content is pending approval. By clicking 'Approve', it will be immediately published. By clicking 'Reject', it will be deleted.</label> 
+	<label class="approve-details right-align col s12">此内容待批准。点击“批准”按钮可即刻发布，点“拒绝”按钮将会删除。</label> 
 </div>
 `
 	}
@@ -186,7 +186,7 @@ func Form(post Editable, fields ...Field) ([]byte, error) {
 			action = action + '/delete';
 			form.attr('action', action);
 			
-			if (confirm("[Ponzu] Please confirm:\n\nAre you sure you want to delete this post?\nThis cannot be undone.")) {
+			if (confirm("请确认：\n\n您是否确定删除此内容？\n本操作无法恢复。")) {
 				form.submit();
 			}
 		});
@@ -206,7 +206,7 @@ func Form(post Editable, fields ...Field) ([]byte, error) {
 			action = action + '/delete?reject=true';
 			form.attr('action', action);
 
-			if (confirm("[Ponzu] Please confirm:\n\nAre you sure you want to reject this post?\nDoing so will delete it, and cannot be undone.")) {
+			if (confirm("请确认：\n\n您是否确定拒绝此内容？\n拒绝会删除此内容且不可恢复。")) {
 				form.submit();
 			}
 		});
@@ -239,7 +239,7 @@ func addPostDefaultFieldsToEditorView(p Editable, e *Editor) error {
 				"label":       "URL Slug",
 				"type":        "text",
 				"disabled":    "true",
-				"placeholder": "Will be set automatically",
+				"placeholder": "此项会自动填充",
 			}),
 		},
 		{

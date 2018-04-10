@@ -15,6 +15,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/text/transform"
 	"golang.org/x/text/unicode/norm"
+	"reflect"
 )
 
 // Sluggable makes a struct locatable by URL with it's own path.
@@ -35,6 +36,7 @@ type Identifiable interface {
 	SetItemID(int)
 	UniqueID() uuid.UUID
 	String() string
+	TypeName() string
 }
 
 // Sortable ensures data is sortable by time
@@ -118,6 +120,10 @@ type Item struct {
 // Time partially implements the Sortable interface
 func (i Item) Time() int64 {
 	return i.Timestamp
+}
+
+func (i Item) TypeName() string {
+	return reflect.TypeOf(i).Name()
 }
 
 // Touch partially implements the Sortable interface

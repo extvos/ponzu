@@ -690,27 +690,25 @@ func forgotPasswordHandler(res http.ResponseWriter, req *http.Request) {
 		}
 
 		body := fmt.Sprintf(`
-There has been an account recovery request made for the user with email:
+有一个用户账户重置请求来自邮件：
 %s
 
-To recover your account, please go to http://%s/admin/recover/key and enter 
-this email address along with the following secret key:
+如需重置您的帐户，请访问 http://%s/admin/recover/key 并输入您的邮件和下面这个安全码：
 
 %s
 
-If you did not make the request, ignore this message and your password 
-will remain as-is.
+如果您不做任何请求，您的密码将保持原有的不变。
 
+谢谢
 
-Thank you,
-Ponzu CMS at %s
+Expeak %s
 
 `, email, domain, key, domain)
 
 		msg := emailer.Message{
 			To:      email,
-			From:    fmt.Sprintf("ponzu@%s", domain),
-			Subject: fmt.Sprintf("Account Recovery [%s]", domain),
+			From:    fmt.Sprintf("admin@%s", domain),
+			Subject: fmt.Sprintf("账户重置 [%s]", domain),
 			Body:    body,
 		}
 
@@ -906,13 +904,13 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 					<div class="row">
 					<div class="col s8">
 						<div class="row">
-							<div class="card-title col s7">Uploaded Items</div>
+							<div class="card-title col s7">已上传项目</div>
 							<div class="col s5 input-field inline">
 								<select class="browser-default __ponzu sort-order">
-									<option value="DESC">New to Old</option>
-									<option value="ASC">Old to New</option>
+									<option value="DESC">新 - 旧</option>
+									<option value="ASC">旧 - 新</option>
 								</select>
-								<label class="active">Sort:</label>
+								<label class="active">排序：</label>
 							</div>	
 							<script>
 								$(function() {
@@ -936,9 +934,9 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 					</div>
 					<form class="col s4" action="/admin/uploads/search" method="get">
 						<div class="input-field post-search inline">
-							<label class="active">Search:</label>
+							<label class="active">搜索：</label>
 							<i class="right material-icons search-icon">search</i>
-							<input class="search" name="q" type="text" placeholder="Within all Upload fields" class="search"/>
+							<input class="search" name="q" type="text" placeholder="从上传内容中搜索" class="search"/>
 							<input type="hidden" name="type" value="__uploads" />
 						</div>
                     </form>	
@@ -953,7 +951,7 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			log.Println("Error unmarshal json into", t, err, string(posts[i]))
 
-			post := `<li class="col s12">Error decoding data. Possible file corruption.</li>`
+			post := `<li class="col s12">解析数据失败。可能文件已损坏！</li>`
 			_, err := b.Write([]byte(post))
 			if err != nil {
 				log.Println(err)
@@ -1032,7 +1030,7 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 	pagination := fmt.Sprintf(`
 	<ul class="pagination row">
 		<li class="col s2 waves-effect %s"><a href="%s"><i class="material-icons">chevron_left</i></a></li>
-		<li class="col s8">%d to %d of %d</li>
+		<li class="col s8">%d - %d / %d</li>
 		<li class="col s2 waves-effect %s"><a href="%s"><i class="material-icons">chevron_right</i></a></li>
 	</ul>
 	`, prevStatus, prevURL, start, end, total, nextStatus, nextURL)
@@ -1043,7 +1041,7 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 		pagination = `
 		<ul class="pagination row">
 			<li class="col s2 waves-effect disabled"><a href="#"><i class="material-icons">chevron_left</i></a></li>
-			<li class="col s8">0 to 0 of 0</li>
+			<li class="col s8">0 - 0 / 0</li>
 			<li class="col s2 waves-effect disabled"><a href="#"><i class="material-icons">chevron_right</i></a></li>
 		</ul>
 		`
@@ -1068,7 +1066,7 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 		$(function() {
 			var del = $('.quick-delete-post.__ponzu span');
 			del.on('click', function(e) {
-				if (confirm("[Ponzu] Please confirm:\n\nAre you sure you want to delete this post?\nThis cannot be undone.")) {
+				if (confirm("请确认：\n\n您是否确认删除此内容？\n本操作无法恢复。")) {
 					$(e.target).parent().submit();
 				}
 			});
@@ -1083,7 +1081,7 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 	</script>
 	`
 
-	btn := `<div class="col s3"><a href="/admin/edit/upload" class="btn new-post waves-effect waves-light">New Upload</a></div></div>`
+	btn := `<div class="col s3"><a href="/admin/edit/upload" class="btn new-post waves-effect waves-light">上传</a></div></div>`
 	html = html + b.String() + script + btn
 
 	adminView, err := Admin([]byte(html))
@@ -1130,7 +1128,10 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	pt := item.Types[t]()
-
+	typename := t
+	if p, ok := pt.(item.Identifiable); ok {
+		typename = p.TypeName()
+	}
 	p, ok := pt.(editor.Editable)
 	if !ok {
 		res.WriteHeader(http.StatusInternalServerError)
@@ -1203,13 +1204,13 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 					<div class="row">
 					<div class="col s8">
 						<div class="row">
-							<div class="card-title col s7">` + t + ` Items</div>
+							<div class="card-title col s7">` + typename + ` 项目</div>
 							<div class="col s5 input-field inline">
 								<select class="browser-default __ponzu sort-order">
-									<option value="DESC">New to Old</option>
-									<option value="ASC">Old to New</option>
+									<option value="DESC">新 - 旧</option>
+									<option value="ASC">旧 - 新</option>
 								</select>
-								<label class="active">Sort:</label>
+								<label class="active">排序：</label>
 							</div>	
 							<script>
 								$(function() {
@@ -1239,9 +1240,9 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 					</div>
 					<form class="col s4" action="/admin/contents/search" method="get">
 						<div class="input-field post-search inline">
-							<label class="active">Search:</label>
+							<label class="active">搜索：</label>
 							<i class="right material-icons search-icon">search</i>
-							<input class="search" name="q" type="text" placeholder="Within all ` + t + ` fields" class="search"/>
+							<input class="search" name="q" type="text" placeholder="在所有的 ` + typename + ` 中搜索" class="search"/>
 							<input type="hidden" name="type" value="` + t + `" />
 							<input type="hidden" name="status" value="` + status + `" />
 						</div>
@@ -1268,10 +1269,10 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 			total, posts = db.Query(t+specifier, opts)
 
 			html += `<div class="row externalable">
-					<span class="description">Status:</span> 
-					<span class="active">Public</span>
+					<span class="description">状态：</span> 
+					<span class="active">已发布</span>
 					&nbsp;&vert;&nbsp;
-					<a href="` + pendingURL + `">Pending</a>
+					<a href="` + pendingURL + `">等待中</a>
 				</div>`
 
 			for i := range posts {
@@ -1279,7 +1280,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 				if err != nil {
 					log.Println("Error unmarshal json into", t, err, string(posts[i]))
 
-					post := `<li class="col s12">Error decoding data. Possible file corruption.</li>`
+					post := `<li class="col s12">数据解析失败。可能文件已损坏！</li>`
 					_, err := b.Write([]byte(post))
 					if err != nil {
 						log.Println(err)
@@ -1318,10 +1319,10 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 			total, posts = db.Query(t+"__pending", opts)
 
 			html += `<div class="row externalable">
-					<span class="description">Status:</span> 
-					<a href="` + publicURL + `">Public</a>
+					<span class="description">状态：</span> 
+					<a href="` + publicURL + `">已发布</a>
 					&nbsp;&vert;&nbsp;
-					<span class="active">Pending</span>					
+					<span class="active">等待中</span>					
 				</div>`
 
 			for i := len(posts) - 1; i >= 0; i-- {
@@ -1329,7 +1330,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 				if err != nil {
 					log.Println("Error unmarshal json into", t, err, string(posts[i]))
 
-					post := `<li class="col s12">Error decoding data. Possible file corruption.</li>`
+					post := `<li class="col s12">数据解析失败。可能文件已损坏！</li>`
 					_, err := b.Write([]byte(post))
 					if err != nil {
 						log.Println(err)
@@ -1371,7 +1372,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 			if err != nil {
 				log.Println("Error unmarshal json into", t, err, string(posts[i]))
 
-				post := `<li class="col s12">Error decoding data. Possible file corruption.</li>`
+				post := `<li class="col s12">数据解析失败。可能文件已损坏！</li>`
 				_, err := b.Write([]byte(post))
 				if err != nil {
 					log.Println(err)
@@ -1451,7 +1452,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 	pagination := fmt.Sprintf(`
 	<ul class="pagination row">
 		<li class="col s2 waves-effect %s"><a href="%s"><i class="material-icons">chevron_left</i></a></li>
-		<li class="col s8">%d to %d of %d</li>
+		<li class="col s8">%d - %d / %d</li>
 		<li class="col s2 waves-effect %s"><a href="%s"><i class="material-icons">chevron_right</i></a></li>
 	</ul>
 	`, prevStatus, prevURL, start, end, total, nextStatus, nextURL)
@@ -1462,7 +1463,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 		pagination = `
 		<ul class="pagination row">
 			<li class="col s2 waves-effect disabled"><a href="#"><i class="material-icons">chevron_left</i></a></li>
-			<li class="col s8">0 to 0 of 0</li>
+			<li class="col s8">0 - 0 / 0</li>
 			<li class="col s2 waves-effect disabled"><a href="#"><i class="material-icons">chevron_right</i></a></li>
 		</ul>
 		`
@@ -1487,7 +1488,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 		$(function() {
 			var del = $('.quick-delete-post.__ponzu span');
 			del.on('click', function(e) {
-				if (confirm("[Ponzu] Please confirm:\n\nAre you sure you want to delete this post?\nThis cannot be undone.")) {
+				if (confirm("请确认：\n\n您是否确定删除此内容？\n本操作无法恢复。")) {
 					$(e.target).parent().submit();
 				}
 			});
@@ -1504,7 +1505,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 
 	btn := `<div class="col s3">
 		<a href="/admin/edit?type=` + t + `" class="btn new-post waves-effect waves-light">
-			New ` + t + `
+			新增 ` + typename + `
 		</a>`
 
 	if _, ok := pt.(format.CSVFormattable); ok {
@@ -1535,14 +1536,14 @@ func adminPostListItem(e editor.Editable, typeName, status string) []byte {
 	s, ok := e.(item.Sortable)
 	if !ok {
 		log.Println("Content type", typeName, "doesn't implement item.Sortable")
-		post := `<li class="col s12">Error retreiving data. Your data type doesn't implement necessary interfaces. (item.Sortable)</li>`
+		post := `<li class="col s12">数据接收错误。您的数据类型不符合所需的接口需求！(item.Sortable)</li>`
 		return []byte(post)
 	}
 
 	i, ok := e.(item.Identifiable)
 	if !ok {
 		log.Println("Content type", typeName, "doesn't implement item.Identifiable")
-		post := `<li class="col s12">Error retreiving data. Your data type doesn't implement necessary interfaces. (item.Identifiable)</li>`
+		post := `<li class="col s12">数据接收错误。您的数据类型不符合所需的接口需求！(item.Identifiable)</li>`
 		return []byte(post)
 	}
 
@@ -1569,11 +1570,11 @@ func adminPostListItem(e editor.Editable, typeName, status string) []byte {
 	post := `
 			<li class="col s12">
 				` + link + `
-				<span class="post-detail">Updated: ` + updatedTime + `</span>
+				<span class="post-detail">上传于： ` + updatedTime + `</span>
 				<span class="publish-date right">` + publishTime + `</span>
 
 				<form enctype="multipart/form-data" class="quick-delete-post __ponzu right" action="/admin/edit/delete" method="post">
-					<span>Delete</span>
+					<span>删除</span>
 					<input type="hidden" name="id" value="` + cid + `" />
 					<input type="hidden" name="type" value="` + typeName + status + `" />
 				</form>
@@ -2480,18 +2481,21 @@ func searchHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	post := pt()
-
+	typename := t
+	if v, ok := post.(item.Identifiable); ok {
+		typename = v.TypeName()
+	}
 	p := post.(editor.Editable)
 
 	html := `<div class="col s9 card">		
 					<div class="card-content">
 					<div class="row">
-					<div class="card-title col s7">` + t + ` Results</div>	
+					<div class="card-title col s7">搜索 ` + typename + ` 结果</div>
 					<form class="col s4" action="/admin/contents/search" method="get">
 						<div class="input-field post-search inline">
-							<label class="active">Search:</label>
+							<label class="active">搜索：</label>
 							<i class="right material-icons search-icon">search</i>
-							<input class="search" name="q" type="text" placeholder="Within all ` + t + ` fields" class="search"/>
+							<input class="search" name="q" type="text" placeholder="从所有的 ` + typename + ` 中搜索" class="search"/>
 							<input type="hidden" name="type" value="` + t + `" />
 							<input type="hidden" name="status" value="` + status + `" />
 						</div>
@@ -2511,7 +2515,7 @@ func searchHandler(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			log.Println("Error unmarshal search result json into", t, err, posts[i])
 
-			post := `<li class="col s12">Error decoding data. Possible file corruption.</li>`
+			post := `<li class="col s12">数据解析失败。可能文件已损坏！</li>`
 			_, err = b.Write([]byte(post))
 			if err != nil {
 				log.Println(err)
@@ -2563,7 +2567,7 @@ func searchHandler(res http.ResponseWriter, req *http.Request) {
 		$(function() {
 			var del = $('.quick-delete-post.__ponzu span');
 			del.on('click', function(e) {
-				if (confirm("[Ponzu] Please confirm:\n\nAre you sure you want to delete this post?\nThis cannot be undone.")) {
+				if (confirm("请确认：\n\n您是否确定删除此内容？\n本操作无法恢复。")) {
 					$(e.target).parent().submit();
 				}
 			});
@@ -2580,7 +2584,7 @@ func searchHandler(res http.ResponseWriter, req *http.Request) {
 
 	btn := `<div class="col s3">
 		<a href="/admin/edit?type=` + t + `" class="btn new-post waves-effect waves-light">
-			New ` + t + `
+			新增 ` + typename + `
 		</a>`
 
 	html += b.String() + script + btn + `</div></div>`
@@ -2614,12 +2618,12 @@ func uploadSearchHandler(res http.ResponseWriter, req *http.Request) {
 	html := `<div class="col s9 card">		
 					<div class="card-content">
 					<div class="row">
-					<div class="card-title col s7">Uploads Results</div>	
+					<div class="card-title col s7">上传结果</div>	
 					<form class="col s4" action="/admin/uploads/search" method="get">
 						<div class="input-field post-search inline">
-							<label class="active">Search:</label>
+							<label class="active">搜索：</label>
 							<i class="right material-icons search-icon">search</i>
-							<input class="search" name="q" type="text" placeholder="Within all Upload fields" class="search"/>
+							<input class="search" name="q" type="text" placeholder="在所有的上传中搜索" class="search"/>
 							<input type="hidden" name="type" value="` + t + `" />
 						</div>
                     </form>	
@@ -2638,7 +2642,7 @@ func uploadSearchHandler(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			log.Println("Error unmarshal search result json into", t, err, posts[i])
 
-			post := `<li class="col s12">Error decoding data. Possible file corruption.</li>`
+			post := `<li class="col s12">数据解析失败。可能文件已损坏！</li>`
 			_, err = b.Write([]byte(post))
 			if err != nil {
 				log.Println(err)
@@ -2685,7 +2689,7 @@ func uploadSearchHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	btn := `<div class="col s3"><a href="/admin/edit/upload" class="btn new-post waves-effect waves-light">New Upload</a></div></div>`
+	btn := `<div class="col s3"><a href="/admin/edit/upload" class="btn new-post waves-effect waves-light">上传</a></div></div>`
 	html = html + b.String() + btn
 
 	adminView, err := Admin([]byte(html))
@@ -2726,7 +2730,7 @@ func addonsHandler(res http.ResponseWriter, req *http.Request) {
 		open := `<div class="col s9 card">		
 				<div class="card-content">
 				<div class="row">
-				<div class="card-title col s7">Addons</div>	
+				<div class="card-title col s7">组件</div>	
 				</div>
 				<ul class="posts row">`
 
@@ -2773,7 +2777,7 @@ func addonsHandler(res http.ResponseWriter, req *http.Request) {
 		}
 
 		if html.Len() == 0 {
-			_, err := html.WriteString(`<p>No addons available.</p>`)
+			_, err := html.WriteString(`<p>无可用的组件。</p>`)
 			if err != nil {
 				log.Println("Error writing default addon html to admin view:", err)
 				res.WriteHeader(http.StatusInternalServerError)
@@ -3132,7 +3136,7 @@ func adminAddonListItem(data []byte) []byte {
 					<div class="col s9">
 						<a class="addon-name" href="/admin/addon?id=` + id + `" alt="Configure '` + name + `'">` + name + `</a>
 						<span class="addon-meta addon-author">by: <a href="` + authorURL + `">` + author + `</a></span>
-						<span class="addon-meta addon-version">version: ` + version + `</span>
+						<span class="addon-meta addon-version">版本：` + version + `</span>
 					</div>
 
 					<div class="col s3">					
