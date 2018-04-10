@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ponzu-cms/ponzu/management/format"
-	"github.com/ponzu-cms/ponzu/system/db"
-	"github.com/ponzu-cms/ponzu/system/item"
+	"github.com/extvos/ponzu/management/format"
+	"github.com/extvos/ponzu/system/db"
+	"github.com/extvos/ponzu/system/item"
 
 	"github.com/tidwall/gjson"
 )

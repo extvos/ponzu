@@ -12,18 +12,18 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ponzu-cms/ponzu/management/editor"
-	"github.com/ponzu-cms/ponzu/management/format"
-	"github.com/ponzu-cms/ponzu/management/manager"
-	"github.com/ponzu-cms/ponzu/system/addon"
-	"github.com/ponzu-cms/ponzu/system/admin/config"
-	"github.com/ponzu-cms/ponzu/system/admin/upload"
-	"github.com/ponzu-cms/ponzu/system/admin/user"
-	"github.com/ponzu-cms/ponzu/system/api"
-	"github.com/ponzu-cms/ponzu/system/api/analytics"
-	"github.com/ponzu-cms/ponzu/system/db"
-	"github.com/ponzu-cms/ponzu/system/item"
-	"github.com/ponzu-cms/ponzu/system/search"
+	"github.com/extvos/ponzu/management/editor"
+	"github.com/extvos/ponzu/management/format"
+	"github.com/extvos/ponzu/management/manager"
+	"github.com/extvos/ponzu/system/addon"
+	"github.com/extvos/ponzu/system/admin/config"
+	"github.com/extvos/ponzu/system/admin/upload"
+	"github.com/extvos/ponzu/system/admin/user"
+	"github.com/extvos/ponzu/system/api"
+	"github.com/extvos/ponzu/system/api/analytics"
+	"github.com/extvos/ponzu/system/db"
+	"github.com/extvos/ponzu/system/item"
+	"github.com/extvos/ponzu/system/search"
 
 	"github.com/gorilla/schema"
 	emailer "github.com/nilslice/email"
@@ -690,16 +690,16 @@ func forgotPasswordHandler(res http.ResponseWriter, req *http.Request) {
 		}
 
 		body := fmt.Sprintf(`
-ÓĞÒ»¸öÓÃ»§ÕË»§ÖØÖÃÇëÇóÀ´×ÔÓÊ¼ş£º
+æœ‰ä¸€ä¸ªç”¨æˆ·è´¦æˆ·é‡ç½®è¯·æ±‚æ¥è‡ªé‚®ä»¶ï¼š
 %s
 
-ÈçĞèÖØÖÃÄúµÄÕÊ»§£¬Çë·ÃÎÊ http://%s/admin/recover/key ²¢ÊäÈëÄúµÄÓÊ¼şºÍÏÂÃæÕâ¸ö°²È«Âë£º
+å¦‚éœ€é‡ç½®æ‚¨çš„å¸æˆ·ï¼Œè¯·è®¿é—® http://%s/admin/recover/key å¹¶è¾“å…¥æ‚¨çš„é‚®ä»¶å’Œä¸‹é¢è¿™ä¸ªå®‰å…¨ç ï¼š
 
 %s
 
-Èç¹ûÄú²»×öÈÎºÎÇëÇó£¬ÄúµÄÃÜÂë½«±£³ÖÔ­ÓĞµÄ²»±ä¡£
+å¦‚æœæ‚¨ä¸åšä»»ä½•è¯·æ±‚ï¼Œæ‚¨çš„å¯†ç å°†ä¿æŒåŸæœ‰çš„ä¸å˜ã€‚
 
-Ğ»Ğ»
+è°¢è°¢
 
 Expeak %s
 
@@ -708,7 +708,7 @@ Expeak %s
 		msg := emailer.Message{
 			To:      email,
 			From:    fmt.Sprintf("admin@%s", domain),
-			Subject: fmt.Sprintf("ÕË»§ÖØÖÃ [%s]", domain),
+			Subject: fmt.Sprintf("è´¦æˆ·é‡ç½® [%s]", domain),
 			Body:    body,
 		}
 
@@ -904,13 +904,13 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 					<div class="row">
 					<div class="col s8">
 						<div class="row">
-							<div class="card-title col s7">ÒÑÉÏ´«ÏîÄ¿</div>
+							<div class="card-title col s7">å·²ä¸Šä¼ é¡¹ç›®</div>
 							<div class="col s5 input-field inline">
 								<select class="browser-default __ponzu sort-order">
-									<option value="DESC">ĞÂ - ¾É</option>
-									<option value="ASC">¾É - ĞÂ</option>
+									<option value="DESC">æ–° - æ—§</option>
+									<option value="ASC">æ—§ - æ–°</option>
 								</select>
-								<label class="active">ÅÅĞò£º</label>
+								<label class="active">æ’åºï¼š</label>
 							</div>	
 							<script>
 								$(function() {
@@ -934,9 +934,9 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 					</div>
 					<form class="col s4" action="/admin/uploads/search" method="get">
 						<div class="input-field post-search inline">
-							<label class="active">ËÑË÷£º</label>
+							<label class="active">æœç´¢ï¼š</label>
 							<i class="right material-icons search-icon">search</i>
-							<input class="search" name="q" type="text" placeholder="´ÓÉÏ´«ÄÚÈİÖĞËÑË÷" class="search"/>
+							<input class="search" name="q" type="text" placeholder="ä»ä¸Šä¼ å†…å®¹ä¸­æœç´¢" class="search"/>
 							<input type="hidden" name="type" value="__uploads" />
 						</div>
                     </form>	
@@ -951,7 +951,7 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			log.Println("Error unmarshal json into", t, err, string(posts[i]))
 
-			post := `<li class="col s12">½âÎöÊı¾İÊ§°Ü¡£¿ÉÄÜÎÄ¼şÒÑËğ»µ£¡</li>`
+			post := `<li class="col s12">è§£ææ•°æ®å¤±è´¥ã€‚å¯èƒ½æ–‡ä»¶å·²æŸåï¼</li>`
 			_, err := b.Write([]byte(post))
 			if err != nil {
 				log.Println(err)
@@ -1066,7 +1066,7 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 		$(function() {
 			var del = $('.quick-delete-post.__ponzu span');
 			del.on('click', function(e) {
-				if (confirm("ÇëÈ·ÈÏ£º\n\nÄúÊÇ·ñÈ·ÈÏÉ¾³ı´ËÄÚÈİ£¿\n±¾²Ù×÷ÎŞ·¨»Ö¸´¡£")) {
+				if (confirm("è¯·ç¡®è®¤ï¼š\n\næ‚¨æ˜¯å¦ç¡®è®¤åˆ é™¤æ­¤å†…å®¹ï¼Ÿ\næœ¬æ“ä½œæ— æ³•æ¢å¤ã€‚")) {
 					$(e.target).parent().submit();
 				}
 			});
@@ -1081,7 +1081,7 @@ func uploadContentsHandler(res http.ResponseWriter, req *http.Request) {
 	</script>
 	`
 
-	btn := `<div class="col s3"><a href="/admin/edit/upload" class="btn new-post waves-effect waves-light">ÉÏ´«</a></div></div>`
+	btn := `<div class="col s3"><a href="/admin/edit/upload" class="btn new-post waves-effect waves-light">ä¸Šä¼ </a></div></div>`
 	html = html + b.String() + script + btn
 
 	adminView, err := Admin([]byte(html))
@@ -1204,13 +1204,13 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 					<div class="row">
 					<div class="col s8">
 						<div class="row">
-							<div class="card-title col s7">` + typename + ` ÏîÄ¿</div>
+							<div class="card-title col s7">` + typename + ` é¡¹ç›®</div>
 							<div class="col s5 input-field inline">
 								<select class="browser-default __ponzu sort-order">
-									<option value="DESC">ĞÂ - ¾É</option>
-									<option value="ASC">¾É - ĞÂ</option>
+									<option value="DESC">æ–° - æ—§</option>
+									<option value="ASC">æ—§ - æ–°</option>
 								</select>
-								<label class="active">ÅÅĞò£º</label>
+								<label class="active">æ’åºï¼š</label>
 							</div>	
 							<script>
 								$(function() {
@@ -1240,9 +1240,9 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 					</div>
 					<form class="col s4" action="/admin/contents/search" method="get">
 						<div class="input-field post-search inline">
-							<label class="active">ËÑË÷£º</label>
+							<label class="active">æœç´¢ï¼š</label>
 							<i class="right material-icons search-icon">search</i>
-							<input class="search" name="q" type="text" placeholder="ÔÚËùÓĞµÄ ` + typename + ` ÖĞËÑË÷" class="search"/>
+							<input class="search" name="q" type="text" placeholder="åœ¨æ‰€æœ‰çš„ ` + typename + ` ä¸­æœç´¢" class="search"/>
 							<input type="hidden" name="type" value="` + t + `" />
 							<input type="hidden" name="status" value="` + status + `" />
 						</div>
@@ -1269,10 +1269,10 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 			total, posts = db.Query(t+specifier, opts)
 
 			html += `<div class="row externalable">
-					<span class="description">×´Ì¬£º</span> 
-					<span class="active">ÒÑ·¢²¼</span>
+					<span class="description">çŠ¶æ€ï¼š</span> 
+					<span class="active">å·²å‘å¸ƒ</span>
 					&nbsp;&vert;&nbsp;
-					<a href="` + pendingURL + `">µÈ´ıÖĞ</a>
+					<a href="` + pendingURL + `">ç­‰å¾…ä¸­</a>
 				</div>`
 
 			for i := range posts {
@@ -1280,7 +1280,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 				if err != nil {
 					log.Println("Error unmarshal json into", t, err, string(posts[i]))
 
-					post := `<li class="col s12">Êı¾İ½âÎöÊ§°Ü¡£¿ÉÄÜÎÄ¼şÒÑËğ»µ£¡</li>`
+					post := `<li class="col s12">æ•°æ®è§£æå¤±è´¥ã€‚å¯èƒ½æ–‡ä»¶å·²æŸåï¼</li>`
 					_, err := b.Write([]byte(post))
 					if err != nil {
 						log.Println(err)
@@ -1319,10 +1319,10 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 			total, posts = db.Query(t+"__pending", opts)
 
 			html += `<div class="row externalable">
-					<span class="description">×´Ì¬£º</span> 
-					<a href="` + publicURL + `">ÒÑ·¢²¼</a>
+					<span class="description">çŠ¶æ€ï¼š</span> 
+					<a href="` + publicURL + `">å·²å‘å¸ƒ</a>
 					&nbsp;&vert;&nbsp;
-					<span class="active">µÈ´ıÖĞ</span>					
+					<span class="active">ç­‰å¾…ä¸­</span>					
 				</div>`
 
 			for i := len(posts) - 1; i >= 0; i-- {
@@ -1330,7 +1330,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 				if err != nil {
 					log.Println("Error unmarshal json into", t, err, string(posts[i]))
 
-					post := `<li class="col s12">Êı¾İ½âÎöÊ§°Ü¡£¿ÉÄÜÎÄ¼şÒÑËğ»µ£¡</li>`
+					post := `<li class="col s12">æ•°æ®è§£æå¤±è´¥ã€‚å¯èƒ½æ–‡ä»¶å·²æŸåï¼</li>`
 					_, err := b.Write([]byte(post))
 					if err != nil {
 						log.Println(err)
@@ -1372,7 +1372,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 			if err != nil {
 				log.Println("Error unmarshal json into", t, err, string(posts[i]))
 
-				post := `<li class="col s12">Êı¾İ½âÎöÊ§°Ü¡£¿ÉÄÜÎÄ¼şÒÑËğ»µ£¡</li>`
+				post := `<li class="col s12">æ•°æ®è§£æå¤±è´¥ã€‚å¯èƒ½æ–‡ä»¶å·²æŸåï¼</li>`
 				_, err := b.Write([]byte(post))
 				if err != nil {
 					log.Println(err)
@@ -1488,7 +1488,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 		$(function() {
 			var del = $('.quick-delete-post.__ponzu span');
 			del.on('click', function(e) {
-				if (confirm("ÇëÈ·ÈÏ£º\n\nÄúÊÇ·ñÈ·¶¨É¾³ı´ËÄÚÈİ£¿\n±¾²Ù×÷ÎŞ·¨»Ö¸´¡£")) {
+				if (confirm("è¯·ç¡®è®¤ï¼š\n\næ‚¨æ˜¯å¦ç¡®å®šåˆ é™¤æ­¤å†…å®¹ï¼Ÿ\næœ¬æ“ä½œæ— æ³•æ¢å¤ã€‚")) {
 					$(e.target).parent().submit();
 				}
 			});
@@ -1505,7 +1505,7 @@ func contentsHandler(res http.ResponseWriter, req *http.Request) {
 
 	btn := `<div class="col s3">
 		<a href="/admin/edit?type=` + t + `" class="btn new-post waves-effect waves-light">
-			ĞÂÔö ` + typename + `
+			æ–°å¢ ` + typename + `
 		</a>`
 
 	if _, ok := pt.(format.CSVFormattable); ok {
@@ -1536,14 +1536,14 @@ func adminPostListItem(e editor.Editable, typeName, status string) []byte {
 	s, ok := e.(item.Sortable)
 	if !ok {
 		log.Println("Content type", typeName, "doesn't implement item.Sortable")
-		post := `<li class="col s12">Êı¾İ½ÓÊÕ´íÎó¡£ÄúµÄÊı¾İÀàĞÍ²»·ûºÏËùĞèµÄ½Ó¿ÚĞèÇó£¡(item.Sortable)</li>`
+		post := `<li class="col s12">æ•°æ®æ¥æ”¶é”™è¯¯ã€‚æ‚¨çš„æ•°æ®ç±»å‹ä¸ç¬¦åˆæ‰€éœ€çš„æ¥å£éœ€æ±‚ï¼(item.Sortable)</li>`
 		return []byte(post)
 	}
 
 	i, ok := e.(item.Identifiable)
 	if !ok {
 		log.Println("Content type", typeName, "doesn't implement item.Identifiable")
-		post := `<li class="col s12">Êı¾İ½ÓÊÕ´íÎó¡£ÄúµÄÊı¾İÀàĞÍ²»·ûºÏËùĞèµÄ½Ó¿ÚĞèÇó£¡(item.Identifiable)</li>`
+		post := `<li class="col s12">æ•°æ®æ¥æ”¶é”™è¯¯ã€‚æ‚¨çš„æ•°æ®ç±»å‹ä¸ç¬¦åˆæ‰€éœ€çš„æ¥å£éœ€æ±‚ï¼(item.Identifiable)</li>`
 		return []byte(post)
 	}
 
@@ -1570,11 +1570,11 @@ func adminPostListItem(e editor.Editable, typeName, status string) []byte {
 	post := `
 			<li class="col s12">
 				` + link + `
-				<span class="post-detail">ÉÏ´«ÓÚ£º ` + updatedTime + `</span>
+				<span class="post-detail">ä¸Šä¼ äºï¼š ` + updatedTime + `</span>
 				<span class="publish-date right">` + publishTime + `</span>
 
 				<form enctype="multipart/form-data" class="quick-delete-post __ponzu right" action="/admin/edit/delete" method="post">
-					<span>É¾³ı</span>
+					<span>åˆ é™¤</span>
 					<input type="hidden" name="id" value="` + cid + `" />
 					<input type="hidden" name="type" value="` + typeName + status + `" />
 				</form>
@@ -2490,12 +2490,12 @@ func searchHandler(res http.ResponseWriter, req *http.Request) {
 	html := `<div class="col s9 card">		
 					<div class="card-content">
 					<div class="row">
-					<div class="card-title col s7">ËÑË÷ ` + typename + ` ½á¹û</div>
+					<div class="card-title col s7">æœç´¢ ` + typename + ` ç»“æœ</div>
 					<form class="col s4" action="/admin/contents/search" method="get">
 						<div class="input-field post-search inline">
-							<label class="active">ËÑË÷£º</label>
+							<label class="active">æœç´¢ï¼š</label>
 							<i class="right material-icons search-icon">search</i>
-							<input class="search" name="q" type="text" placeholder="´ÓËùÓĞµÄ ` + typename + ` ÖĞËÑË÷" class="search"/>
+							<input class="search" name="q" type="text" placeholder="ä»æ‰€æœ‰çš„ ` + typename + ` ä¸­æœç´¢" class="search"/>
 							<input type="hidden" name="type" value="` + t + `" />
 							<input type="hidden" name="status" value="` + status + `" />
 						</div>
@@ -2515,7 +2515,7 @@ func searchHandler(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			log.Println("Error unmarshal search result json into", t, err, posts[i])
 
-			post := `<li class="col s12">Êı¾İ½âÎöÊ§°Ü¡£¿ÉÄÜÎÄ¼şÒÑËğ»µ£¡</li>`
+			post := `<li class="col s12">æ•°æ®è§£æå¤±è´¥ã€‚å¯èƒ½æ–‡ä»¶å·²æŸåï¼</li>`
 			_, err = b.Write([]byte(post))
 			if err != nil {
 				log.Println(err)
@@ -2567,7 +2567,7 @@ func searchHandler(res http.ResponseWriter, req *http.Request) {
 		$(function() {
 			var del = $('.quick-delete-post.__ponzu span');
 			del.on('click', function(e) {
-				if (confirm("ÇëÈ·ÈÏ£º\n\nÄúÊÇ·ñÈ·¶¨É¾³ı´ËÄÚÈİ£¿\n±¾²Ù×÷ÎŞ·¨»Ö¸´¡£")) {
+				if (confirm("è¯·ç¡®è®¤ï¼š\n\næ‚¨æ˜¯å¦ç¡®å®šåˆ é™¤æ­¤å†…å®¹ï¼Ÿ\næœ¬æ“ä½œæ— æ³•æ¢å¤ã€‚")) {
 					$(e.target).parent().submit();
 				}
 			});
@@ -2584,7 +2584,7 @@ func searchHandler(res http.ResponseWriter, req *http.Request) {
 
 	btn := `<div class="col s3">
 		<a href="/admin/edit?type=` + t + `" class="btn new-post waves-effect waves-light">
-			ĞÂÔö ` + typename + `
+			æ–°å¢ ` + typename + `
 		</a>`
 
 	html += b.String() + script + btn + `</div></div>`
@@ -2618,12 +2618,12 @@ func uploadSearchHandler(res http.ResponseWriter, req *http.Request) {
 	html := `<div class="col s9 card">		
 					<div class="card-content">
 					<div class="row">
-					<div class="card-title col s7">ÉÏ´«½á¹û</div>	
+					<div class="card-title col s7">ä¸Šä¼ ç»“æœ</div>	
 					<form class="col s4" action="/admin/uploads/search" method="get">
 						<div class="input-field post-search inline">
-							<label class="active">ËÑË÷£º</label>
+							<label class="active">æœç´¢ï¼š</label>
 							<i class="right material-icons search-icon">search</i>
-							<input class="search" name="q" type="text" placeholder="ÔÚËùÓĞµÄÉÏ´«ÖĞËÑË÷" class="search"/>
+							<input class="search" name="q" type="text" placeholder="åœ¨æ‰€æœ‰çš„ä¸Šä¼ ä¸­æœç´¢" class="search"/>
 							<input type="hidden" name="type" value="` + t + `" />
 						</div>
                     </form>	
@@ -2642,7 +2642,7 @@ func uploadSearchHandler(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			log.Println("Error unmarshal search result json into", t, err, posts[i])
 
-			post := `<li class="col s12">Êı¾İ½âÎöÊ§°Ü¡£¿ÉÄÜÎÄ¼şÒÑËğ»µ£¡</li>`
+			post := `<li class="col s12">æ•°æ®è§£æå¤±è´¥ã€‚å¯èƒ½æ–‡ä»¶å·²æŸåï¼</li>`
 			_, err = b.Write([]byte(post))
 			if err != nil {
 				log.Println(err)
@@ -2689,7 +2689,7 @@ func uploadSearchHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	btn := `<div class="col s3"><a href="/admin/edit/upload" class="btn new-post waves-effect waves-light">ÉÏ´«</a></div></div>`
+	btn := `<div class="col s3"><a href="/admin/edit/upload" class="btn new-post waves-effect waves-light">ä¸Šä¼ </a></div></div>`
 	html = html + b.String() + btn
 
 	adminView, err := Admin([]byte(html))
@@ -2730,7 +2730,7 @@ func addonsHandler(res http.ResponseWriter, req *http.Request) {
 		open := `<div class="col s9 card">		
 				<div class="card-content">
 				<div class="row">
-				<div class="card-title col s7">×é¼ş</div>	
+				<div class="card-title col s7">ç»„ä»¶</div>	
 				</div>
 				<ul class="posts row">`
 
@@ -2777,7 +2777,7 @@ func addonsHandler(res http.ResponseWriter, req *http.Request) {
 		}
 
 		if html.Len() == 0 {
-			_, err := html.WriteString(`<p>ÎŞ¿ÉÓÃµÄ×é¼ş¡£</p>`)
+			_, err := html.WriteString(`<p>æ— å¯ç”¨çš„ç»„ä»¶ã€‚</p>`)
 			if err != nil {
 				log.Println("Error writing default addon html to admin view:", err)
 				res.WriteHeader(http.StatusInternalServerError)
@@ -3136,7 +3136,7 @@ func adminAddonListItem(data []byte) []byte {
 					<div class="col s9">
 						<a class="addon-name" href="/admin/addon?id=` + id + `" alt="Configure '` + name + `'">` + name + `</a>
 						<span class="addon-meta addon-author">by: <a href="` + authorURL + `">` + author + `</a></span>
-						<span class="addon-meta addon-version">°æ±¾£º` + version + `</span>
+						<span class="addon-meta addon-version">ç‰ˆæœ¬ï¼š` + version + `</span>
 					</div>
 
 					<div class="col s3">					

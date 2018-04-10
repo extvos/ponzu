@@ -7,7 +7,7 @@ import (
 	"html/template"
 	"net/url"
 
-	"github.com/ponzu-cms/ponzu/management/editor"
+	"github.com/extvos/ponzu/management/editor"
 
 	"github.com/gorilla/schema"
 	"github.com/tidwall/gjson"

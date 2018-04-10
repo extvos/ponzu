@@ -20,8 +20,8 @@ package content
 import (
 	"fmt"
 
-	"github.com/ponzu-cms/ponzu/management/editor"
-	"github.com/ponzu-cms/ponzu/system/item"
+	"github.com/extvos/ponzu/management/editor"
+	"github.com/extvos/ponzu/system/item"
 )
 
 type Post struct {

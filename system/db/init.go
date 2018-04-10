@@ -6,8 +6,8 @@ package db
 import (
 	"log"
 
-	"github.com/ponzu-cms/ponzu/system/item"
-	"github.com/ponzu-cms/ponzu/system/search"
+	"github.com/extvos/ponzu/system/item"
+	"github.com/extvos/ponzu/system/search"
 
 	"github.com/boltdb/bolt"
 	"github.com/nilslice/jwt"

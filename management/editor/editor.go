@@ -64,47 +64,47 @@ func Form(post Editable, fields ...Field) ([]byte, error) {
 	publishTime := `
 <div class="row content-only __ponzu">
 	<div class="input-field col s4">
-		<label class="active">Äê</label>
+		<label class="active">å¹´</label>
 		<input value="" class="year __ponzu" maxlength="4" type="text" placeholder="YYYY" />
 	</div>
 	<div class="input-field col s6">
-		<label class="active">ÔÂ</label>
+		<label class="active">æœˆ</label>
 		<select class="month __ponzu browser-default">
-			<option value="1">Ò»ÔÂ</option>
-			<option value="2">¶şÔÂ</option>
-			<option value="3">ÈıÔÂ</option>
-			<option value="4">ËÄÔÂ</option>
-			<option value="5">ÎåÔÂ</option>
-			<option value="6">ÁùÔÂ</option>
-			<option value="7">ÆßÔÂ</option>
-			<option value="8">°ËÔÂ</option>
-			<option value="9">¾ÅÔÂ</option>
-			<option value="10">Ê®ÔÂ</option>
-			<option value="11">Ê®Ò»ÔÂ</option>
-			<option value="12">Ê®¶şÔÂ</option>
+			<option value="1">ä¸€æœˆ</option>
+			<option value="2">äºŒæœˆ</option>
+			<option value="3">ä¸‰æœˆ</option>
+			<option value="4">å››æœˆ</option>
+			<option value="5">äº”æœˆ</option>
+			<option value="6">å…­æœˆ</option>
+			<option value="7">ä¸ƒæœˆ</option>
+			<option value="8">å…«æœˆ</option>
+			<option value="9">ä¹æœˆ</option>
+			<option value="10">åæœˆ</option>
+			<option value="11">åä¸€æœˆ</option>
+			<option value="12">åäºŒæœˆ</option>
 		</select>
 	</div>
 	<div class="input-field col s2">
-		<label class="active">ÈÕ</label>
+		<label class="active">æ—¥</label>
 		<input value="" class="day __ponzu" maxlength="2" type="text" placeholder="DD" />
 	</div>
 </div>
 
 <div class="row content-only __ponzu">
 	<div class="input-field col s4">
-		<label class="active">Ê±¶Î</label>
+		<label class="active">æ—¶æ®µ</label>
 		<select class="period __ponzu browser-default">
-			<option value="AM">ÉÏÎç</option>
-			<option value="PM">ÏÂÎç</option>
+			<option value="AM">ä¸Šåˆ</option>
+			<option value="PM">ä¸‹åˆ</option>
 		</select>
 	</div>
 	<div class="input-field col s3">
-		<label class="active">Ğ¡Ê±</label>
+		<label class="active">å°æ—¶</label>
 		<input value="" class="hour __ponzu" maxlength="2" type="text" placeholder="HH" />
 	</div>
 	<div class="col s1">:</div>
 	<div class="input-field col s3">
-		<label class="active">·ÖÖÓ</label>
+		<label class="active">åˆ†é’Ÿ</label>
 		<input value="" class="minute __ponzu" maxlength="2" type="text" placeholder="MM" />
 	</div>
 </div>
@@ -123,8 +123,8 @@ func Form(post Editable, fields ...Field) ([]byte, error) {
 
 	submit := `
 <div class="input-field post-controls">
-	<button class="right waves-effect waves-light btn green save-post" type="submit">±£´æ</button>
-	<button class="right waves-effect waves-light btn red delete-post" type="submit">É¾³ı</button>
+	<button class="right waves-effect waves-light btn green save-post" type="submit">ä¿å­˜</button>
+	<button class="right waves-effect waves-light btn red delete-post" type="submit">åˆ é™¤</button>
 </div>
 `
 	_, ok := post.(Mergeable)
@@ -133,10 +133,10 @@ func Form(post Editable, fields ...Field) ([]byte, error) {
 			`
 <div class="row external post-controls">
 	<div class="col s12 input-field">
-		<button class="right waves-effect waves-light btn blue approve-post" type="submit">Åú×¼</button>
-		<button class="right waves-effect waves-light btn grey darken-2 reject-post" type="submit">¾Ü¾ø</button>
+		<button class="right waves-effect waves-light btn blue approve-post" type="submit">æ‰¹å‡†</button>
+		<button class="right waves-effect waves-light btn grey darken-2 reject-post" type="submit">æ‹’ç»</button>
 	</div>	
-	<label class="approve-details right-align col s12">´ËÄÚÈİ´ıÅú×¼¡£µã»÷¡°Åú×¼¡±°´Å¥¿É¼´¿Ì·¢²¼£¬µã¡°¾Ü¾ø¡±°´Å¥½«»áÉ¾³ı¡£</label> 
+	<label class="approve-details right-align col s12">æ­¤å†…å®¹å¾…æ‰¹å‡†ã€‚ç‚¹å‡»â€œæ‰¹å‡†â€æŒ‰é’®å¯å³åˆ»å‘å¸ƒï¼Œç‚¹â€œæ‹’ç»â€æŒ‰é’®å°†ä¼šåˆ é™¤ã€‚</label> 
 </div>
 `
 	}
@@ -186,7 +186,7 @@ func Form(post Editable, fields ...Field) ([]byte, error) {
 			action = action + '/delete';
 			form.attr('action', action);
 			
-			if (confirm("ÇëÈ·ÈÏ£º\n\nÄúÊÇ·ñÈ·¶¨É¾³ı´ËÄÚÈİ£¿\n±¾²Ù×÷ÎŞ·¨»Ö¸´¡£")) {
+			if (confirm("è¯·ç¡®è®¤ï¼š\n\næ‚¨æ˜¯å¦ç¡®å®šåˆ é™¤æ­¤å†…å®¹ï¼Ÿ\næœ¬æ“ä½œæ— æ³•æ¢å¤ã€‚")) {
 				form.submit();
 			}
 		});
@@ -206,7 +206,7 @@ func Form(post Editable, fields ...Field) ([]byte, error) {
 			action = action + '/delete?reject=true';
 			form.attr('action', action);
 
-			if (confirm("ÇëÈ·ÈÏ£º\n\nÄúÊÇ·ñÈ·¶¨¾Ü¾ø´ËÄÚÈİ£¿\n¾Ü¾ø»áÉ¾³ı´ËÄÚÈİÇÒ²»¿É»Ö¸´¡£")) {
+			if (confirm("è¯·ç¡®è®¤ï¼š\n\næ‚¨æ˜¯å¦ç¡®å®šæ‹’ç»æ­¤å†…å®¹ï¼Ÿ\næ‹’ç»ä¼šåˆ é™¤æ­¤å†…å®¹ä¸”ä¸å¯æ¢å¤ã€‚")) {
 				form.submit();
 			}
 		});
@@ -239,7 +239,7 @@ func addPostDefaultFieldsToEditorView(p Editable, e *Editor) error {
 				"label":       "URL Slug",
 				"type":        "text",
 				"disabled":    "true",
-				"placeholder": "´ËÏî»á×Ô¶¯Ìî³ä",
+				"placeholder": "æ­¤é¡¹ä¼šè‡ªåŠ¨å¡«å……",
 			}),
 		},
 		{

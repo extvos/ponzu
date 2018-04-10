@@ -9,10 +9,10 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/ponzu-cms/ponzu/system/admin/user"
-	"github.com/ponzu-cms/ponzu/system/api/analytics"
-	"github.com/ponzu-cms/ponzu/system/db"
-	"github.com/ponzu-cms/ponzu/system/item"
+	"github.com/extvos/ponzu/system/admin/user"
+	"github.com/extvos/ponzu/system/api/analytics"
+	"github.com/extvos/ponzu/system/db"
+	"github.com/extvos/ponzu/system/item"
 )
 
 var startAdminHTML = `<!doctype html>
@@ -42,7 +42,7 @@ var startAdminHTML = `<!doctype html>
                 <a class="brand-logo" href="/admin">{{ .Logo }}</a>
 
                 <ul class="right">
-                    <li><a href="/admin/logout">×¢Ïú</a></li>
+                    <li><a href="/admin/logout">æ³¨é”€</a></li>
                 </ul>
             </div>
             </nav>
@@ -54,7 +54,7 @@ var mainAdminHTML = `
             <div class="left-nav col s3">
                 <div class="card">
                 <ul class="card-content collection">
-                    <div class="card-title">ÄÚÈİ</div>
+                    <div class="card-title">å†…å®¹</div>
                                     
                     {{ range $t, $f := .Types }}
                     <div class="row collection-item">
@@ -62,12 +62,12 @@ var mainAdminHTML = `
                     </div>
                     {{ end }}
 
-                    <div class="card-title">ÏµÍ³</div>                                
+                    <div class="card-title">ç³»ç»Ÿ</div>                                
                     <div class="row collection-item">
-                        <li><a class="col s12" href="/admin/configure"><i class="tiny left material-icons">settings</i>ÉèÖÃ</a></li>
-                        <li><a class="col s12" href="/admin/configure/users"><i class="tiny left material-icons">supervisor_account</i>¹ÜÀíÔ±</a></li>
-                        <li><a class="col s12" href="/admin/uploads"><i class="tiny left material-icons">swap_vert</i>ÉÏ´«</a></li>
-                        <li><a class="col s12" href="/admin/addons"><i class="tiny left material-icons">settings_input_svideo</i>×é¼ş</a></li>
+                        <li><a class="col s12" href="/admin/configure"><i class="tiny left material-icons">settings</i>è®¾ç½®</a></li>
+                        <li><a class="col s12" href="/admin/configure/users"><i class="tiny left material-icons">supervisor_account</i>ç®¡ç†å‘˜</a></li>
+                        <li><a class="col s12" href="/admin/uploads"><i class="tiny left material-icons">swap_vert</i>ä¸Šä¼ </a></li>
+                        <li><a class="col s12" href="/admin/addons"><i class="tiny left material-icons">settings_input_svideo</i>ç»„ä»¶</a></li>
                     </div>
                 </ul>
                 </div>
@@ -134,28 +134,28 @@ var initAdminHTML = `
 <div class="init col s5">
 <div class="card">
 <div class="card-content">
-    <div class="card-title">»¶Ó­£¡</div>
-    <blockquote>ÔÚÄúÊ¹ÓÃÏµÍ³Ö®Ç°ĞèÒªÌîĞ´ÏÂÃæµÄÅäÖÃÒÔ³õÊ¼»¯¡£ËùÓĞµÄĞÅÏ¢ºóÃæ»¹¿ÉÒÔ¸üĞÂ£¬µ«ÊÇµ±Ç°ÄúĞèÒªÏÈ³õÊ¼»¯²ÅÄÜ¿ªÊ¼Ê¹ÓÃ¡£</blockquote>
+    <div class="card-title">æ¬¢è¿ï¼</div>
+    <blockquote>åœ¨æ‚¨ä½¿ç”¨ç³»ç»Ÿä¹‹å‰éœ€è¦å¡«å†™ä¸‹é¢çš„é…ç½®ä»¥åˆå§‹åŒ–ã€‚æ‰€æœ‰çš„ä¿¡æ¯åé¢è¿˜å¯ä»¥æ›´æ–°ï¼Œä½†æ˜¯å½“å‰æ‚¨éœ€è¦å…ˆåˆå§‹åŒ–æ‰èƒ½å¼€å§‹ä½¿ç”¨ã€‚</blockquote>
     <form method="post" action="/admin/init" class="row">
-        <div>ÉèÖÃ</div>
+        <div>è®¾ç½®</div>
         <div class="input-field col s12">        
-            <input placeholder="ÊäÈëÄúµÄÕ¾µãÃû³Æ£¨½öÄÚ²¿Ê¹ÓÃ£©" class="validate required" type="text" id="name" name="name"/>
-            <label for="name" class="active">Õ¾µãÃû³Æ</label>
+            <input placeholder="è¾“å…¥æ‚¨çš„ç«™ç‚¹åç§°ï¼ˆä»…å†…éƒ¨ä½¿ç”¨ï¼‰" class="validate required" type="text" id="name" name="name"/>
+            <label for="name" class="active">ç«™ç‚¹åç§°</label>
         </div>
         <div class="input-field col s12">        
-            <input placeholder="»ñÈ¡SSLÖ¤ÊéÊ±ºòĞèÒª£¨ÀıÈç£º www.example.com »ò  example.com£©" class="validate" type="text" id="domain" name="domain"/>
-            <label for="domain" class="active">ÓòÃû</label>
+            <input placeholder="è·å–SSLè¯ä¹¦æ—¶å€™éœ€è¦ï¼ˆä¾‹å¦‚ï¼š www.example.com æˆ–  example.comï¼‰" class="validate" type="text" id="domain" name="domain"/>
+            <label for="domain" class="active">åŸŸå</label>
         </div>
-        <div>¹ÜÀíÔ±</div>
+        <div>ç®¡ç†å‘˜</div>
         <div class="input-field col s12">
-            <input placeholder="ÄúµÄÓÊÏäµØÖ·£¬±ÈÈç£ºyou@example.com" class="validate required" type="email" id="email" name="email"/>
-            <label for="email" class="active">ÓÊÏä</label>
+            <input placeholder="æ‚¨çš„é‚®ç®±åœ°å€ï¼Œæ¯”å¦‚ï¼šyou@example.com" class="validate required" type="email" id="email" name="email"/>
+            <label for="email" class="active">é‚®ç®±</label>
         </div>
         <div class="input-field col s12">
-            <input placeholder="¸ã¸öÀ÷º¦µãµÄÃÜÂë°É" class="validate required" type="password" id="password" name="password"/>
-            <label for="password" class="active">ÃÜÂë</label>        
+            <input placeholder="æä¸ªå‰å®³ç‚¹çš„å¯†ç å§" class="validate required" type="password" id="password" name="password"/>
+            <label for="password" class="active">å¯†ç </label>        
         </div>
-        <button class="btn waves-effect waves-light right">¿ªÊ¼</button>
+        <button class="btn waves-effect waves-light right">å¼€å§‹</button>
     </form>
 </div>
 </div>
@@ -218,19 +218,19 @@ var loginAdminHTML = `
 <div class="init col s5">
 <div class="card">
 <div class="card-content">
-    <div class="card-title">»¶Ó­£¡</div>
-    <blockquote>ÇëÊ¹ÓÃÄúµÄÓÊÏäµØÖ·ºÍÃÜÂëµÇÂ¼ÏµÍ³£¡</blockquote>
+    <div class="card-title">æ¬¢è¿ï¼</div>
+    <blockquote>è¯·ä½¿ç”¨æ‚¨çš„é‚®ç®±åœ°å€å’Œå¯†ç ç™»å½•ç³»ç»Ÿï¼</blockquote>
     <form method="post" action="/admin/login" class="row">
         <div class="input-field col s12">
-            <input placeholder="ÄúµÄÓÊÏäµØÖ·£¬±ÈÈç£ºyou@example.com" class="validate required" type="email" id="email" name="email"/>
-            <label for="email" class="active">ÓÊÏä</label>
+            <input placeholder="æ‚¨çš„é‚®ç®±åœ°å€ï¼Œæ¯”å¦‚ï¼šyou@example.com" class="validate required" type="email" id="email" name="email"/>
+            <label for="email" class="active">é‚®ç®±</label>
         </div>
         <div class="input-field col s12">
-            <input placeholder="ÊäÈëÃÜÂë" class="validate required" type="password" id="password" name="password"/>
-            <a href="/admin/recover">ÃÜÂëÍüÁË£¿</a>            
-            <label for="password" class="active">ÃÜÂë</label>  
+            <input placeholder="è¾“å…¥å¯†ç " class="validate required" type="password" id="password" name="password"/>
+            <a href="/admin/recover">å¯†ç å¿˜äº†ï¼Ÿ</a>            
+            <label for="password" class="active">å¯†ç </label>  
         </div>
-        <button class="btn waves-effect waves-light right">µÇÂ¼</button>
+        <button class="btn waves-effect waves-light right">ç™»å½•</button>
     </form>
 </div>
 </div>
@@ -273,16 +273,16 @@ var forgotPasswordHTML = `
 <div class="init col s5">
 <div class="card">
 <div class="card-content">
-    <div class="card-title">ÕË»§ÖØÖÃ</div>
-    <blockquote>ÇëÊäÈëÄúµÄÕÊ»§ÓÊÏäµØÖ·£¬ÄúÕâ¸öÓÊÏäµØÖ·½«»áÊÕµ½Ò»·âÖØÖÃÕË»§µÄÓÊ¼ş£¬È»ºó¸ù¾İÓÊ¼şÖ¸ÒıÖØÖÃÄúµÄÕÊ»§¡£±ğÍüÁË¼ì²éÒ»ÏÂÓÊÏäµÄÀ¬»øĞÅ¼ş·Ö×éÅ¶£¡</blockquote>
+    <div class="card-title">è´¦æˆ·é‡ç½®</div>
+    <blockquote>è¯·è¾“å…¥æ‚¨çš„å¸æˆ·é‚®ç®±åœ°å€ï¼Œæ‚¨è¿™ä¸ªé‚®ç®±åœ°å€å°†ä¼šæ”¶åˆ°ä¸€å°é‡ç½®è´¦æˆ·çš„é‚®ä»¶ï¼Œç„¶åæ ¹æ®é‚®ä»¶æŒ‡å¼•é‡ç½®æ‚¨çš„å¸æˆ·ã€‚åˆ«å¿˜äº†æ£€æŸ¥ä¸€ä¸‹é‚®ç®±çš„åƒåœ¾ä¿¡ä»¶åˆ†ç»„å“¦ï¼</blockquote>
     <form method="post" action="/admin/recover" class="row" enctype="multipart/form-data">
         <div class="input-field col s12">
-            <input placeholder="ÄúµÄÓÊÏäµØÖ·£¬±ÈÈç£ºyou@example.com" class="validate required" type="email" id="email" name="email"/>
-            <label for="email" class="active">ÓÊÏä</label>
+            <input placeholder="æ‚¨çš„é‚®ç®±åœ°å€ï¼Œæ¯”å¦‚ï¼šyou@example.com" class="validate required" type="email" id="email" name="email"/>
+            <label for="email" class="active">é‚®ç®±</label>
         </div>
         
-        <a href="/admin/recover/key">ÒÑ¾­ÓĞÒ»¸öÖØÖÃÑéÖ¤Âë£¿</a>
-        <button class="btn waves-effect waves-light right">·¢ËÍÖØÖÃÓÊ¼ş</button>
+        <a href="/admin/recover/key">å·²ç»æœ‰ä¸€ä¸ªé‡ç½®éªŒè¯ç ï¼Ÿ</a>
+        <button class="btn waves-effect waves-light right">å‘é€é‡ç½®é‚®ä»¶</button>
     </form>
 </div>
 </div>
@@ -325,25 +325,25 @@ var recoveryKeyHTML = `
 <div class="init col s5">
 <div class="card">
 <div class="card-content">
-    <div class="card-title">ÕË»§ÖØÖÃ</div>
-    <blockquote>Çë¼ì²éÒ»ÏÂÄúÌá¹©µÄÓÊÏäµØÖ·ÊÇ·ñÊÕµ½Ò»·â°üº¬ÁËÒ»¸öÖØÖÃÑéÖ¤ÂëµÄÓÊ¼ş£¬±ğÍüÁËÀ¬»øĞÅ¼ş·Ö×éÒ²ÕÒÕÒ£¡</blockquote>
+    <div class="card-title">è´¦æˆ·é‡ç½®</div>
+    <blockquote>è¯·æ£€æŸ¥ä¸€ä¸‹æ‚¨æä¾›çš„é‚®ç®±åœ°å€æ˜¯å¦æ”¶åˆ°ä¸€å°åŒ…å«äº†ä¸€ä¸ªé‡ç½®éªŒè¯ç çš„é‚®ä»¶ï¼Œåˆ«å¿˜äº†åƒåœ¾ä¿¡ä»¶åˆ†ç»„ä¹Ÿæ‰¾æ‰¾ï¼</blockquote>
     <form method="post" action="/admin/recover/key" class="row" enctype="multipart/form-data">
         <div class="input-field col s12">
-            <input placeholder="ÊäÈëÖØÖÃÑéÖ¤Âë" class="validate required" type="text" id="key" name="key"/>
-            <label for="key" class="active">ÖØÖÃÑéÖ¤Âë</label>
+            <input placeholder="è¾“å…¥é‡ç½®éªŒè¯ç " class="validate required" type="text" id="key" name="key"/>
+            <label for="key" class="active">é‡ç½®éªŒè¯ç </label>
         </div>
 
         <div class="input-field col s12">
-            <input placeholder="ÄúµÄÓÊÏäµØÖ·£¬±ÈÈç£ºyou@example.com" class="validate required" type="email" id="email" name="email"/>
-            <label for="email" class="active">ÓÊÏäµØÖ·</label>
+            <input placeholder="æ‚¨çš„é‚®ç®±åœ°å€ï¼Œæ¯”å¦‚ï¼šyou@example.com" class="validate required" type="email" id="email" name="email"/>
+            <label for="email" class="active">é‚®ç®±åœ°å€</label>
         </div>
 
         <div class="input-field col s12">
-            <input placeholder="ÊäÈëĞÂÃÜÂë" class="validate required" type="password" id="password" name="password"/>
-            <label for="password" class="active">ĞÂÃÜÂë</label>
+            <input placeholder="è¾“å…¥æ–°å¯†ç " class="validate required" type="password" id="password" name="password"/>
+            <label for="password" class="active">æ–°å¯†ç </label>
         </div>
         
-        <button class="btn waves-effect waves-light right">¸üĞÂÕË»§</button>
+        <button class="btn waves-effect waves-light right">æ›´æ–°è´¦æˆ·</button>
     </form>
 </div>
 </div>
@@ -386,54 +386,54 @@ func RecoveryKey() ([]byte, error) {
 func UsersList(req *http.Request) ([]byte, error) {
 	html := `
     <div class="card user-management">
-        <div class="card-title">±à¼­ÄúµÄÕÊ»§</div>    
+        <div class="card-title">ç¼–è¾‘æ‚¨çš„å¸æˆ·</div>    
         <form class="row" enctype="multipart/form-data" action="/admin/configure/users/edit" method="post">
             <div class="col s9">
-                <label class="active">ÓÊ¼şµØÖ·</label>
+                <label class="active">é‚®ä»¶åœ°å€</label>
                 <input type="email" name="email" value="{{ .User.Email }}"/>
             </div>
 
             <div class="col s9">
-                <div>ÇëÊäÈëÄúµÄÃÜÂëÒÔ¼ÌĞø¸ü¸Ä</div>
+                <div>è¯·è¾“å…¥æ‚¨çš„å¯†ç ä»¥ç»§ç»­æ›´æ”¹</div>
                 
-                <label class="active">µ±Ç°ÃÜÂë</label>
+                <label class="active">å½“å‰å¯†ç </label>
                 <input type="password" name="password"/>
             </div>
 
             <div class="col s9">
-                <label class="active">ĞÂÃÜÂë£º£¨Áô¿Õ½«²»»á¸üĞÂÃÜÂë£©</label>
+                <label class="active">æ–°å¯†ç ï¼šï¼ˆç•™ç©ºå°†ä¸ä¼šæ›´æ–°å¯†ç ï¼‰</label>
                 <input name="new_password" type="password"/>
             </div>
 
             <div class="col s9">                        
-                <button class="btn waves-effect waves-light green right" type="submit">±£´æ</button>
+                <button class="btn waves-effect waves-light green right" type="submit">ä¿å­˜</button>
             </div>
         </form>
 
-        <div class="card-title">Ìí¼ÓÒ»¸öĞÂÓÃ»§</div>        
+        <div class="card-title">æ·»åŠ ä¸€ä¸ªæ–°ç”¨æˆ·</div>        
         <form class="row" enctype="multipart/form-data" action="/admin/configure/users" method="post">
             <div class="col s9">
-                <label class="active">ÓÊ¼şµØÖ·</label>
+                <label class="active">é‚®ä»¶åœ°å€</label>
                 <input type="email" name="email" value=""/>
             </div>
 
             <div class="col s9">
-                <label class="active">ÃÜÂë</label>
+                <label class="active">å¯†ç </label>
                 <input type="password" name="password"/>
             </div>
 
             <div class="col s9">            
-                <button class="btn waves-effect waves-light green right" type="submit">Ìí¼ÓÓÃ»§</button>
+                <button class="btn waves-effect waves-light green right" type="submit">æ·»åŠ ç”¨æˆ·</button>
             </div>   
         </form>        
 
-        <div class="card-title">É¾³ı¹ÜÀíÔ±ÓÃ»§</div>        
+        <div class="card-title">åˆ é™¤ç®¡ç†å‘˜ç”¨æˆ·</div>        
         <ul class="users row">
             {{ range .Users }}
             <li class="col s9">
                 {{ .Email }}
                 <form enctype="multipart/form-data" class="delete-user __ponzu right" action="/admin/configure/users/delete" method="post">
-                    <span>É¾³ı</span>
+                    <span>åˆ é™¤</span>
                     <input type="hidden" name="email" value="{{ .Email }}"/>
                     <input type="hidden" name="id" value="{{ .ID }}"/>
                 </form>
@@ -447,7 +447,7 @@ func UsersList(req *http.Request) ([]byte, error) {
         $(function() {
             var del = $('.delete-user.__ponzu span');
             del.on('click', function(e) {
-                if (confirm("ÇëÈ·ÈÏ£º\n\nÄúÊÇ·ñÈ·¶¨É¾³ı¸ÃÓÃ»§£¿\n±¾²Ù×÷ÎŞ·¨»Ö¸´£¡")) {
+                if (confirm("è¯·ç¡®è®¤ï¼š\n\næ‚¨æ˜¯å¦ç¡®å®šåˆ é™¤è¯¥ç”¨æˆ·ï¼Ÿ\næœ¬æ“ä½œæ— æ³•æ¢å¤ï¼")) {
                     $(e.target).parent().submit();
                 }
             });
@@ -504,8 +504,8 @@ var analyticsHTML = `
 <div class="analytics">
 <div class="card">
 <div class="card-content">
-    <p class="right">Êı¾İ·¶Î§£º {{ .from }} - {{ .to }} (UTC)</p>
-    <div class="card-title">API ÇëÇó</div>
+    <p class="right">æ•°æ®èŒƒå›´ï¼š {{ .from }} - {{ .to }} (UTC)</p>
+    <div class="card-title">API è¯·æ±‚</div>
     <canvas id="analytics-chart"></canvas>
     <script>
     var target = document.getElementById("analytics-chart");
@@ -518,7 +518,7 @@ var analyticsHTML = `
             labels: [{{ range $date := .dates }} "{{ $date }}",  {{ end }}],
             datasets: [{
                 type: 'line',
-                label: '¶ÀÁ¢¿Í»§¶Ë',
+                label: 'ç‹¬ç«‹å®¢æˆ·ç«¯',
                 data: $.parseJSON({{ .unique }}),
                 backgroundColor: 'rgba(76, 175, 80, 0.2)',
                 borderColor: 'rgba(76, 175, 80, 1)',
@@ -526,7 +526,7 @@ var analyticsHTML = `
             },
             {
                 type: 'bar',
-                label: '×ÜÇëÇó',
+                label: 'æ€»è¯·æ±‚',
                 data: $.parseJSON({{ .total }}),
                 backgroundColor: 'rgba(33, 150, 243, 0.2)',
                 borderColor: 'rgba(33, 150, 243, 1)',
@@ -569,8 +569,8 @@ var err400HTML = []byte(`
 <div class="error-page e400 col s6">
 <div class="card">
 <div class="card-content">
-    <div class="card-title"><b>400</b> ´íÎó£º ´íÎóµÄÇëÇó£¡</div>
-    <blockquote>¶Ô²»Æğ£¬ÄúµÄÇëÇóÎŞ·¨Íê³É£¡</blockquote>
+    <div class="card-title"><b>400</b> é”™è¯¯ï¼š é”™è¯¯çš„è¯·æ±‚ï¼</div>
+    <blockquote>å¯¹ä¸èµ·ï¼Œæ‚¨çš„è¯·æ±‚æ— æ³•å®Œæˆï¼</blockquote>
 </div>
 </div>
 </div>
@@ -585,8 +585,8 @@ var err404HTML = []byte(`
 <div class="error-page e404 col s6">
 <div class="card">
 <div class="card-content">
-    <div class="card-title"><b>404</b> ´íÎó: ¶ÔÏóÎ´ÕÒµ½</div>
-    <blockquote>¶Ô²»Æğ£¬ÄúÒªÕÒµÄÒ³ÃæÎŞ·¨ÕÒµ½£¡</blockquote>
+    <div class="card-title"><b>404</b> é”™è¯¯: å¯¹è±¡æœªæ‰¾åˆ°</div>
+    <blockquote>å¯¹ä¸èµ·ï¼Œæ‚¨è¦æ‰¾çš„é¡µé¢æ— æ³•æ‰¾åˆ°ï¼</blockquote>
 </div>
 </div>
 </div>
@@ -601,8 +601,8 @@ var err405HTML = []byte(`
 <div class="error-page e405 col s6">
 <div class="card">
 <div class="card-content">
-    <div class="card-title"><b>405</b> ´íÎó: ·½·¨²»ÔÊĞí</div>
-    <blockquote>¶Ô²»Æğ£¬ÇëÇó·½·¨²»ÔÊĞí</blockquote>
+    <div class="card-title"><b>405</b> é”™è¯¯: æ–¹æ³•ä¸å…è®¸</div>
+    <blockquote>å¯¹ä¸èµ·ï¼Œè¯·æ±‚æ–¹æ³•ä¸å…è®¸</blockquote>
 </div>
 </div>
 </div>
@@ -617,8 +617,8 @@ var err500HTML = []byte(`
 <div class="error-page e500 col s6">
 <div class="card">
 <div class="card-content">
-    <div class="card-title"><b>500</b> ´íÎó: ·şÎñÆ÷ÄÚ²¿´íÎó</div>
-    <blockquote>¶Ô²»Æğ£¬²»¿ÉÔ¤ÖªµÄ´íÎó·¢ÉúÁË£¡</blockquote>
+    <div class="card-title"><b>500</b> é”™è¯¯: æœåŠ¡å™¨å†…éƒ¨é”™è¯¯</div>
+    <blockquote>å¯¹ä¸èµ·ï¼Œä¸å¯é¢„çŸ¥çš„é”™è¯¯å‘ç”Ÿäº†ï¼</blockquote>
 </div>
 </div>
 </div>
@@ -633,7 +633,7 @@ var errMessageHTML = `
 <div class="error-page eMsg col s6">
 <div class="card">
 <div class="card-content">
-    <div class="card-title"><b>´íÎó£º&nbsp;</b>%s</div>
+    <div class="card-title"><b>é”™è¯¯ï¼š&nbsp;</b>%s</div>
     <blockquote>%s</blockquote>
 </div>
 </div>

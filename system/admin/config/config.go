@@ -4,8 +4,8 @@
 package config
 
 import (
-	"github.com/ponzu-cms/ponzu/management/editor"
-	"github.com/ponzu-cms/ponzu/system/item"
+	"github.com/extvos/ponzu/management/editor"
+	"github.com/extvos/ponzu/system/item"
 )
 
 // Config represents the confirgurable options of the system
@@ -31,8 +31,8 @@ type Config struct {
 
 const (
 	dbBackupInfo = `
-		<p class="flow-text">Êı¾İ¿â±¸·İÈÏÖ¤£º</p>
-		<p>Ìí¼ÓÒ»¸öÓÃ»§ÃûºÍÃÜÂëÒÔÏŞÖÆÄúµÄÊı¾İ¿â±¸·İÎÄ¼ş´ÓHTTPÏÂÔØ¡£</p>
+		<p class="flow-text">æ•°æ®åº“å¤‡ä»½è®¤è¯ï¼š</p>
+		<p>æ·»åŠ ä¸€ä¸ªç”¨æˆ·åå’Œå¯†ç ä»¥é™åˆ¶æ‚¨çš„æ•°æ®åº“å¤‡ä»½æ–‡ä»¶ä»HTTPä¸‹è½½ã€‚</p>
 	`
 )
 
@@ -44,14 +44,14 @@ func (c *Config) MarshalEditor() ([]byte, error) {
 	view, err := editor.Form(c,
 		editor.Field{
 			View: editor.Input("Name", c, map[string]string{
-				"label":       "Õ¾µãÃû³Æ£¨½ö¹©ÄÚ²¿Ê¹ÓÃ£©",
-				"placeholder": "ÉèÖÃÒ»¸öÕ¾µãÃû³Æ£¨½ö¹©ÄÚ²¿Ê¹ÓÃ£©",
+				"label":       "ç«™ç‚¹åç§°ï¼ˆä»…ä¾›å†…éƒ¨ä½¿ç”¨ï¼‰",
+				"placeholder": "è®¾ç½®ä¸€ä¸ªç«™ç‚¹åç§°ï¼ˆä»…ä¾›å†…éƒ¨ä½¿ç”¨ï¼‰",
 			}),
 		},
 		editor.Field{
 			View: editor.Input("Domain", c, map[string]string{
-				"label":       "ÓòÃû £¨ÅäÖÃSSLÖ¤ÊéÊ±ĞèÒª£©",
-				"placeholder": "ÀıÈç£º www.example.com »ò example.com",
+				"label":       "åŸŸå ï¼ˆé…ç½®SSLè¯ä¹¦æ—¶éœ€è¦ï¼‰",
+				"placeholder": "ä¾‹å¦‚ï¼š www.example.com æˆ– example.com",
 			}),
 		},
 		editor.Field{
@@ -71,12 +71,12 @@ func (c *Config) MarshalEditor() ([]byte, error) {
 		},
 		editor.Field{
 			View: editor.Input("AdminEmail", c, map[string]string{
-				"label": "¹ÜÀíÔ±ÓÊ¼şµØÖ·£¨ÏûÏ¢ÌáĞÑºÍÄÚ²¿ĞÅÏ¢½ÓÊÕÓÃ£©",
+				"label": "ç®¡ç†å‘˜é‚®ä»¶åœ°å€ï¼ˆæ¶ˆæ¯æé†’å’Œå†…éƒ¨ä¿¡æ¯æ¥æ”¶ç”¨ï¼‰",
 			}),
 		},
 		editor.Field{
 			View: editor.Input("ClientSecret", c, map[string]string{
-				"label":    "¿Í»§¶ËÃÜÂë£¨ÓÃÓÚÑéÖ¤ÇëÇó£¬Ò»°ãÈË±ğ¸æËßËû£©",
+				"label":    "å®¢æˆ·ç«¯å¯†ç ï¼ˆç”¨äºéªŒè¯è¯·æ±‚ï¼Œä¸€èˆ¬äººåˆ«å‘Šè¯‰ä»–ï¼‰",
 				"disabled": "true",
 			}),
 		},
@@ -87,7 +87,7 @@ func (c *Config) MarshalEditor() ([]byte, error) {
 		},
 		editor.Field{
 			View: editor.Input("Etag", c, map[string]string{
-				"label":    "EtagÍ·ÏûÏ¢£¨ÓÃÓÚ»º´æ¿ØÖÆ£©",
+				"label":    "Etagå¤´æ¶ˆæ¯ï¼ˆç”¨äºç¼“å­˜æ§åˆ¶ï¼‰",
 				"disabled": "true",
 			}),
 		},
@@ -98,36 +98,36 @@ func (c *Config) MarshalEditor() ([]byte, error) {
 		},
 		editor.Field{
 			View: editor.Checkbox("DisableCORS", c, map[string]string{
-				"label": "½ûÓÃ CORS £¨Èç´ËÔò½ö" + c.Domain + "¿ÉÒÔ·ÃÎÊµ½ÄúµÄÊı¾İ£©",
+				"label": "ç¦ç”¨ CORS ï¼ˆå¦‚æ­¤åˆ™ä»…" + c.Domain + "å¯ä»¥è®¿é—®åˆ°æ‚¨çš„æ•°æ®ï¼‰",
 			}, map[string]string{
-				"true": "½ûÓÃ CORS",
+				"true": "ç¦ç”¨ CORS",
 			}),
 		},
 		editor.Field{
 			View: editor.Checkbox("DisableGZIP", c, map[string]string{
-				"label": "½ûÓÃ GZIP £¨½ûÓÃÑ¹ËõGZIPÄÜÌáÉı·şÎñÆ÷ËÙ¶È£¬µ«ÊÇÏûºÄ¸ü¶à´ø¿í£©",
+				"label": "ç¦ç”¨ GZIP ï¼ˆç¦ç”¨å‹ç¼©GZIPèƒ½æå‡æœåŠ¡å™¨é€Ÿåº¦ï¼Œä½†æ˜¯æ¶ˆè€—æ›´å¤šå¸¦å®½ï¼‰",
 			}, map[string]string{
-				"true": "½ûÓÃ GZIP",
+				"true": "ç¦ç”¨ GZIP",
 			}),
 		},
 		editor.Field{
 			View: editor.Checkbox("DisableHTTPCache", c, map[string]string{
-				"label": "½ûÓÃ HTTP »º´æ £¨ÖØĞ´ 'Cache-Control' Í·ÏûÏ¢£©",
+				"label": "ç¦ç”¨ HTTP ç¼“å­˜ ï¼ˆé‡å†™ 'Cache-Control' å¤´æ¶ˆæ¯ï¼‰",
 			}, map[string]string{
-				"true": "½ûÓÃ HTTP »º´æ",
+				"true": "ç¦ç”¨ HTTP ç¼“å­˜",
 			}),
 		},
 		editor.Field{
 			View: editor.Input("CacheMaxAge", c, map[string]string{
-				"label": "HTTP»º´æµÄMax-AgeÖµ£¨µ¥Î»£ºÃë£¬0 ¡« 259200£©",
+				"label": "HTTPç¼“å­˜çš„Max-Ageå€¼ï¼ˆå•ä½ï¼šç§’ï¼Œ0 ï½ 259200ï¼‰",
 				"type":  "text",
 			}),
 		},
 		editor.Field{
 			View: editor.Checkbox("CacheInvalidate", c, map[string]string{
-				"label": "±£´æµÄÍ¬Ê±Ê¹»º´æÊ§Ğ§",
+				"label": "ä¿å­˜çš„åŒæ—¶ä½¿ç¼“å­˜å¤±æ•ˆ",
 			}, map[string]string{
-				"invalidate": "Ê¹»º´æÊ§Ğ§",
+				"invalidate": "ä½¿ç¼“å­˜å¤±æ•ˆ",
 			}),
 		},
 		editor.Field{
@@ -135,15 +135,15 @@ func (c *Config) MarshalEditor() ([]byte, error) {
 		},
 		editor.Field{
 			View: editor.Input("BackupBasicAuthUser", c, map[string]string{
-				"label":       "HTTPÈÏÖ¤ÓÃ»§Ãû",
-				"placeholder": "ÊäÈëÒ»¸öÓÃ»§Ãû",
+				"label":       "HTTPè®¤è¯ç”¨æˆ·å",
+				"placeholder": "è¾“å…¥ä¸€ä¸ªç”¨æˆ·å",
 				"type":        "text",
 			}),
 		},
 		editor.Field{
 			View: editor.Input("BackupBasicAuthPassword", c, map[string]string{
-				"label":       "HTTPÈÏÖ¤ÃÜÂë",
-				"placeholder": "ÊäÈëÒ»¸öÃÜÂë",
+				"label":       "HTTPè®¤è¯å¯†ç ",
+				"placeholder": "è¾“å…¥ä¸€ä¸ªå¯†ç ",
 				"type":        "password",
 			}),
 		},
@@ -155,7 +155,7 @@ func (c *Config) MarshalEditor() ([]byte, error) {
 	open := []byte(`
 	<div class="card">
 		<div class="card-content">
-			<div class="card-title">ÏµÍ³ÉèÖÃ</div>
+			<div class="card-title">ç³»ç»Ÿè®¾ç½®</div>
 		</div>
 		<form action="/admin/configure" method="post">
 	`)

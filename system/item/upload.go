@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ponzu-cms/ponzu/management/editor"
+	"github.com/extvos/ponzu/management/editor"
 )
 
 // FileUpload represents the file uploaded to the system
@@ -34,9 +34,9 @@ func (f *FileUpload) MarshalEditor() ([]byte, error) {
                 <!-- Add your custom editor field view here. -->
 				<h5>` + f.Name + `</h5>
 				<ul>
-					<li><span class="grey-text text-lighten-1">´óĞ¡£º</span> ` + fmt.Sprintf("%s", FmtBytes(float64(f.ContentLength))) + `</li>
-					<li><span class="grey-text text-lighten-1">ÀàĞÍ£º</span> ` + f.ContentType + `</li>
-					<li><span class="grey-text text-lighten-1">ÉÏ´«ÓÚ£º</span> ` + FmtTime(f.Timestamp) + `</li>
+					<li><span class="grey-text text-lighten-1">å¤§å°ï¼š</span> ` + fmt.Sprintf("%s", FmtBytes(float64(f.ContentLength))) + `</li>
+					<li><span class="grey-text text-lighten-1">ç±»å‹ï¼š</span> ` + f.ContentType + `</li>
+					<li><span class="grey-text text-lighten-1">ä¸Šä¼ äºï¼š</span> ` + FmtTime(f.Timestamp) + `</li>
 				</ul>
             </div>
             `)
@@ -44,8 +44,8 @@ func (f *FileUpload) MarshalEditor() ([]byte, error) {
 		},
 		editor.Field{
 			View: editor.File("Path", f, map[string]string{
-				"label":       "ÎÄ¼şÉÏ´«",
-				"placeholder": "ÉÏ´«ÎÄ¼şµ½ÕâÀï",
+				"label":       "æ–‡ä»¶ä¸Šä¼ ",
+				"placeholder": "ä¸Šä¼ æ–‡ä»¶åˆ°è¿™é‡Œ",
 			}),
 		},
 	)
