@@ -10,7 +10,7 @@ import (
 func buildPonzuServer() error {
 	// copy all ./content files to internal vendor directory
 	src := "content"
-	dst := filepath.Join("cmd", "ponzu", "vendor", "github.com", "ponzu-cms", "ponzu", "content")
+	dst := filepath.Join("cmd", "ponzu", "vendor", "github.com", "extvos", "ponzu", "content")
 	err := emptyDir(dst)
 	if err != nil {
 		return err

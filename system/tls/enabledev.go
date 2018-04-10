@@ -20,7 +20,7 @@ func EnableDev() {
 		log.Fatalln("Couldn't find working directory to activate dev certificates:", err)
 	}
 
-	vendorPath := filepath.Join(pwd, "cmd", "ponzu", "vendor", "github.com", "ponzu-cms", "ponzu", "system", "tls")
+	vendorPath := filepath.Join(pwd, "cmd", "ponzu", "vendor", "github.com", "extvos", "ponzu", "system", "tls")
 
 	cert := filepath.Join(vendorPath, "devcerts", "cert.pem")
 	key := filepath.Join(vendorPath, "devcerts", "key.pem")
