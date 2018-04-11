@@ -72,7 +72,7 @@ func Close() {
 // sets up the queue/batching channel
 func Init() {
 	var err error
-	store, err = bolt.Open("analytics.db", 0666, nil)
+	store, err = bolt.Open("db/analytics.db", 0666, nil)
 	if err != nil {
 		log.Fatalln(err)
 	}

@@ -46,7 +46,7 @@ func Init() {
 	}
 
 	var err error
-	store, err = bolt.Open("system.db", 0666, nil)
+	store, err = bolt.Open("db/system.db", 0666, nil)
 	if err != nil {
 		log.Fatalln(err)
 	}
