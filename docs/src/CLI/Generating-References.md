@@ -68,7 +68,7 @@ package content
 import (
 	"fmt"
 
-	"github.com/bosssauce/reference"
+	"github.com/extvos/reference"
 
 	"github.com/extvos/ponzu/management/editor"
 	"github.com/extvos/ponzu/system/item"

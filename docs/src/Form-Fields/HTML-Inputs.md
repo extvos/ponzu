@@ -341,7 +341,7 @@ editor.Field{
 
 ## Data References
 It is common to want to keep a reference from one Content type to another. To do
-this in Ponzu, use the [`bosssauce/reference`](https://github.com/bosssauce/reference) 
+this in Ponzu, use the [`extvos/reference`](https://github.com/extvos/reference) 
 package. It comes pre-installed with Ponzu as an ["Addon"](/Ponzu-Addons/Using-Addons).
 
 ### `reference.Select`

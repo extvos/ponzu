@@ -20,7 +20,7 @@
 // Request.Body. This would be a somewhat semantic change from HTTP/1
 // (or at least what we expose in net/http), so I'd probably want to
 // add it there too. For now, this package says that returning from
-// the Handler ServeHTTP function means you're both done reading and
+// the handler ServeHTTP function means you're both done reading and
 // done writing, without a way to stop just one or the other.
 
 package http2
@@ -81,7 +81,7 @@ var (
 
 // Server is an HTTP/2 server.
 type Server struct {
-	// MaxHandlers limits the number of http.Handler ServeHTTP goroutines
+	// MaxHandlers limits the number of http.handler ServeHTTP goroutines
 	// which may run at a time over all connections.
 	// Negative or zero no limit.
 	// TODO: implement
@@ -89,7 +89,7 @@ type Server struct {
 
 	// MaxConcurrentStreams optionally specifies the number of
 	// concurrent streams that each client may have open at a
-	// time. This is unrelated to the number of http.Handler goroutines
+	// time. This is unrelated to the number of http.handler goroutines
 	// which may be active globally, which is MaxHandlers.
 	// If zero, MaxConcurrentStreams defaults to at least 100, per
 	// the HTTP/2 spec's recommendations.
@@ -211,9 +211,9 @@ type ServeConnOpts struct {
 	// for values. If nil, defaults are used.
 	BaseConfig *http.Server
 
-	// Handler specifies which handler to use for processing
-	// requests. If nil, BaseConfig.Handler is used. If BaseConfig
-	// or BaseConfig.Handler is nil, http.DefaultServeMux is used.
+	// handler specifies which handler to use for processing
+	// requests. If nil, BaseConfig.handler is used. If BaseConfig
+	// or BaseConfig.handler is nil, http.DefaultServeMux is used.
 	Handler http.Handler
 }
 
@@ -440,10 +440,10 @@ func (sc *serverConn) curOpenStreams() uint32 {
 
 // stream represents a stream. This is the minimal metadata needed by
 // the serve goroutine. Most of the actual stream state is owned by
-// the http.Handler's goroutine in the responseWriter. Because the
+// the http.handler's goroutine in the responseWriter. Because the
 // responseWriter's responseWriterState is recycled at the end of a
 // handler, this struct intentionally has no pointer to the
-// *responseWriter{,State} itself, as the Handler ending nils out the
+// *responseWriter{,State} itself, as the handler ending nils out the
 // responseWriter's state field.
 type stream struct {
 	// immutable:
@@ -457,7 +457,7 @@ type stream struct {
 	// owned by serverConn's serve loop:
 	bodyBytes        int64   // body bytes seen so far
 	declBodyBytes    int64   // or -1 if undeclared
-	flow             flow    // limits writing from Handler to client
+	flow             flow    // limits writing from handler to client
 	inflow           flow    // what the client is allowed to POST/etc to us
 	parent           *stream // or nil
 	numTrailerValues int64
@@ -665,7 +665,7 @@ func (sc *serverConn) stopShutdownTimer() {
 }
 
 func (sc *serverConn) notePanic() {
-	// Note: this is for serverConn.serve panicking, not http.Handler code.
+	// Note: this is for serverConn.serve panicking, not http.handler code.
 	if testHookOnPanicMu != nil {
 		testHookOnPanicMu.Lock()
 		defer testHookOnPanicMu.Unlock()
@@ -833,7 +833,7 @@ func (sc *serverConn) writeDataFromHandler(stream *stream, data []byte, endStrea
 		return errClientDisconnected
 	case <-stream.cw:
 		// If both ch and stream.cw were ready (as might
-		// happen on the final Write after an http.Handler
+		// happen on the final Write after an http.handler
 		// ends), prefer the write result. Otherwise this
 		// might just be us successfully closing the stream.
 		// The writeFrameAsync and serve goroutines guarantee
@@ -1327,7 +1327,7 @@ func (sc *serverConn) closeStream(st *stream, err error) {
 
 		p.CloseWithError(err)
 	}
-	st.cw.Close() // signals Handler's CloseNotifier, unblocks writes, etc
+	st.cw.Close() // signals handler's CloseNotifier, unblocks writes, etc
 	sc.writeSched.CloseStream(st.id)
 }
 
@@ -1434,7 +1434,7 @@ func (sc *serverConn) processData(f *DataFrame) error {
 	if st == nil || state != stateOpen || st.gotTrailerHeader || st.resetQueued {
 		// This includes sending a RST_STREAM if the stream is
 		// in stateHalfClosedLocal (which currently means that
-		// the http.Handler returned, so it's done reading &
+		// the http.handler returned, so it's done reading &
 		// done writing). Try to stop the client from sending
 		// more DATA.
 
@@ -1532,7 +1532,7 @@ func (st *stream) endStream() {
 	st.state = stateHalfClosedRemote
 }
 
-// copyTrailersToHandlerRequest is run in the Handler's goroutine in
+// copyTrailersToHandlerRequest is run in the handler's goroutine in
 // its Request.Body.Read just before it gets io.EOF.
 func (st *stream) copyTrailersToHandlerRequest() {
 	for k, vv := range st.trailer {
@@ -1985,7 +1985,7 @@ func (sc *serverConn) write100ContinueHeaders(st *stream) {
 	})
 }
 
-// A bodyReadMsg tells the server loop that the http.Handler read n
+// A bodyReadMsg tells the server loop that the http.handler read n
 // bytes of the DATA from the client on the given stream.
 type bodyReadMsg struct {
 	st *stream
@@ -2065,7 +2065,7 @@ func (sc *serverConn) sendWindowUpdate32(st *stream, n int32) {
 	}
 }
 
-// requestBody is the Handler's Request.Body type.
+// requestBody is the handler's Request.Body type.
 // Read and Close may be called concurrently.
 type requestBody struct {
 	stream        *stream
@@ -2130,7 +2130,7 @@ type responseWriterState struct {
 	// TODO: adjust buffer writing sizes based on server config, frame size updates from peer, etc
 	bw *bufio.Writer // writing to a chunkWriter{this *responseWriterState}
 
-	// mutated by http.Handler goroutine:
+	// mutated by http.handler goroutine:
 	handlerHeader http.Header // nil until called
 	snapHeader    http.Header // snapshot of handlerHeader at WriteHeader time
 	trailers      []string    // set in writeChunk
@@ -2289,7 +2289,7 @@ const TrailerPrefix = "Trailer:"
 // invalid token byte anyway, there is no ambiguity. (And it's already
 // filtered out) It's mildly hacky, but not terrible.
 //
-// This method runs after the Handler is done and promotes any Header
+// This method runs after the handler is done and promotes any Header
 // fields to be trailers.
 func (rws *responseWriterState) promoteUndeclaredTrailers() {
 	for k, vv := range rws.handlerHeader {
@@ -2311,7 +2311,7 @@ func (rws *responseWriterState) promoteUndeclaredTrailers() {
 func (w *responseWriter) Flush() {
 	rws := w.rws
 	if rws == nil {
-		panic("Header called after Handler finished")
+		panic("Header called after handler finished")
 	}
 	if rws.bw.Buffered() > 0 {
 		if err := rws.bw.Flush(); err != nil {
@@ -2330,7 +2330,7 @@ func (w *responseWriter) Flush() {
 func (w *responseWriter) CloseNotify() <-chan bool {
 	rws := w.rws
 	if rws == nil {
-		panic("CloseNotify called after Handler finished")
+		panic("CloseNotify called after handler finished")
 	}
 	rws.closeNotifierMu.Lock()
 	ch := rws.closeNotifierCh
@@ -2350,7 +2350,7 @@ func (w *responseWriter) CloseNotify() <-chan bool {
 func (w *responseWriter) Header() http.Header {
 	rws := w.rws
 	if rws == nil {
-		panic("Header called after Handler finished")
+		panic("Header called after handler finished")
 	}
 	if rws.handlerHeader == nil {
 		rws.handlerHeader = make(http.Header)
@@ -2361,7 +2361,7 @@ func (w *responseWriter) Header() http.Header {
 func (w *responseWriter) WriteHeader(code int) {
 	rws := w.rws
 	if rws == nil {
-		panic("WriteHeader called after Handler finished")
+		panic("WriteHeader called after handler finished")
 	}
 	rws.writeHeader(code)
 }
@@ -2388,9 +2388,9 @@ func cloneHeader(h http.Header) http.Header {
 
 // The Life Of A Write is like this:
 //
-// * Handler calls w.Write or w.WriteString ->
+// * handler calls w.Write or w.WriteString ->
 // * -> rws.bw (*bufio.Writer) ->
-// * (Handler migth call Flush)
+// * (handler migth call Flush)
 // * -> chunkWriter{rws}
 // * -> responseWriterState.writeChunk(p []byte)
 // * -> responseWriterState.writeChunk (most of the magic; see comment there)
@@ -2406,7 +2406,7 @@ func (w *responseWriter) WriteString(s string) (n int, err error) {
 func (w *responseWriter) write(lenData int, dataB []byte, dataS string) (n int, err error) {
 	rws := w.rws
 	if rws == nil {
-		panic("Write called after Handler finished")
+		panic("Write called after handler finished")
 	}
 	if !rws.wroteHeader {
 		w.WriteHeader(200)

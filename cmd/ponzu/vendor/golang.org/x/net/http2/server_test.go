@@ -1278,7 +1278,7 @@ func testServerPostUnblock(t *testing.T,
 			checkErr(err)
 		}
 	case <-time.After(5 * time.Second):
-		t.Fatal("timeout waiting for Handler to return")
+		t.Fatal("timeout waiting for handler to return")
 	}
 }
 
@@ -2055,7 +2055,7 @@ func TestServer_Response_Empty_Data_Not_FlowControlled(t *testing.T) {
 		// Nothing; send empty DATA
 		return nil
 	}, func(st *serverTester) {
-		// Handler gets no data quota:
+		// handler gets no data quota:
 		if err := st.fr.WriteSettings(Setting{SettingInitialWindowSize, 0}); err != nil {
 			t.Fatal(err)
 		}
@@ -2308,7 +2308,7 @@ func TestServer_NoCrash_HandlerClose_Then_ClientClose(t *testing.T) {
 			t.Fatalf("want END_HEADERS+END_STREAM, got %v", hf)
 		}
 
-		// Sent when the a Handler closes while a client has
+		// Sent when the a handler closes while a client has
 		// indicated it's still sending DATA:
 		st.wantRSTStream(1, ErrCodeCancel)
 
@@ -2471,7 +2471,7 @@ func testServerResponse(t testing.TB,
 	}
 }
 
-// readBodyHandler returns an http Handler func that reads len(want)
+// readBodyHandler returns an http handler func that reads len(want)
 // bytes from r.Body and fails t if the contents read were not
 // the value of want.
 func readBodyHandler(t *testing.T, want string) func(w http.ResponseWriter, r *http.Request) {
@@ -3319,7 +3319,7 @@ func TestServerHandleCustomConn(t *testing.T) {
 // golang.org/issue/14214
 func TestServer_Rejects_ConnHeaders(t *testing.T) {
 	st := newServerTester(t, func(w http.ResponseWriter, r *http.Request) {
-		t.Error("should not get to Handler")
+		t.Error("should not get to handler")
 	})
 	defer st.Close()
 	st.greet()
