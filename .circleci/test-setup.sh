@@ -13,7 +13,17 @@ ponzu
 
 
 # create a project and generate code
-ponzu new github.com/extvos/ci/test-project
+if [ $CIRCLE_BRANCH = "ponzu-dev" ]; then
+        # ensure we have the latest from ponzu-dev branch
+        cd /go/src/github.com/extvos/ponzu
+        git checkout ponzu-dev
+        git pull origin ponzu-dev
+
+        # create new project using the ponzu-dev branch
+        ponzu new --dev github.com/extvos/ci/test-project
+else 
+        ponzu new github.com/extvos/ci/test-project
+fi
 
 cd /go/src/github.com/extvos/ci/test-project
 
